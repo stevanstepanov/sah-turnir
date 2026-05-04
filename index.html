@@ -23,11 +23,11 @@
     overflow-x: hidden;
   }
 
-  .settings-btn {
+  .hero { min-height: 100vh; position: relative; }
+
+  .floating-btn {
     position: fixed;
-    right: 16px;
-    bottom: 16px;
-    z-index: 30;
+    z-index: 60;
     border: 2px solid #9b823d;
     background: rgba(255,250,235,0.96);
     color: #0b321c;
@@ -38,16 +38,18 @@
     box-shadow: 0 4px 15px rgba(0,0,0,0.25);
   }
 
-  body.zoomed .settings-btn,
-  body.zoomed .settings-panel { display: none !important; }
+  .settings-btn { right: 16px; bottom: 16px; }
+  .history-btn { left: 16px; bottom: 16px; }
+  body.zoomed .settings-btn, body.zoomed .history-btn { display: none; }
 
-  .settings-panel {
+  .panel {
     display: none;
     position: fixed;
-    right: 16px;
+    z-index: 70;
     bottom: 64px;
-    z-index: 31;
-    width: min(330px, calc(100vw - 32px));
+    width: min(520px, calc(100vw - 32px));
+    max-height: 70vh;
+    overflow: auto;
     padding: 16px;
     border: 2px solid #9b823d;
     border-radius: 18px;
@@ -56,9 +58,20 @@
     font-family: Arial, sans-serif;
   }
 
-  .settings-panel.show { display: block; }
-  .settings-panel h3 { margin: 0 0 10px; }
-  .settings-panel p { margin: 0 0 12px; font-size: 14px; line-height: 1.35; }
+  .panel.show { display: block; }
+  .settings-panel { right: 16px; }
+  .history-panel { left: 16px; }
+  body.zoomed .panel { display: none !important; }
+
+  .panel h3 { margin: 0 0 10px; color: #0b321c; }
+  .panel h4 { margin: 16px 0 8px; color: #0b321c; }
+  .panel p { margin: 0 0 12px; font-size: 14px; line-height: 1.35; }
+  .panel ol { margin: 0 0 10px 22px; padding: 0; }
+  .panel li { margin: 7px 0; }
+
+  .history-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+  .history-table th, .history-table td { border-bottom: 1px solid #c9b681; padding: 8px; text-align: left; }
+  .history-table th { background: rgba(6,68,31,0.12); }
 
   .action-btn {
     width: 100%;
@@ -73,8 +86,6 @@
   }
 
   .secondary-btn { background: #8a6a24; }
-
-  .hero { min-height: 100vh; position: relative; }
 
   .mini-bracket-button {
     position: absolute;
@@ -133,7 +144,7 @@
     position: fixed;
     top: 18px;
     right: 22px;
-    z-index: 60;
+    z-index: 90;
     border: 2px solid #9b823d;
     background: rgba(255,250,235,0.96);
     color: #0b321c;
@@ -184,61 +195,6 @@
     padding: 8px 120px 8px 0;
   }
 
-  .winner-slot {
-    width: 250px;
-    height: 62px;
-    padding: 6px 70px 6px 14px;
-    opacity: 0;
-    transform: scale(0.96);
-    transition: opacity .3s ease, transform .3s ease;
-  }
-
-  .winner-slot.filled {
-    opacity: 1;
-    transform: scale(1);
-  }
-
-  .winner-slot .slot-name {
-    font-size: 22px;
-    font-weight: bold;
-    white-space: nowrap;
-  }
-
-  .winner-slot .slot-avatar {
-    position: absolute;
-    right: 8px;
-    width: 50px;
-    height: 50px;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 3px solid #caa24a;
-    background: white;
-  }
-
-  .wq1 { left: 610px; top: 99px; }
-  .wq2 { left: 610px; top: 299px; }
-  .wq3 { left: 610px; top: 499px; }
-  .wq4 { left: 610px; top: 699px; }
-
-  .ws1 { left: 1010px; top: 199px; }
-  .ws2 { left: 1010px; top: 599px; }
-
-  .champion-slot {
-    right: 84px;
-    top: 500px;
-    width: 300px;
-    height: 92px;
-    padding: 8px 95px 8px 16px;
-    opacity: 0;
-    transform: scale(0.9);
-    transition: opacity .3s ease, transform .3s ease;
-  }
-
-  .champion-slot.filled { opacity: 1; transform: scale(1); }
-  .champion-slot .crown { position: absolute; top: -38px; left: 50%; transform: translateX(-50%); font-size: 42px; }
-  .champion-slot .slot-name { font-size: 30px; font-weight: bold; }
-  .champion-slot .slot-avatar { position: absolute; right: 10px; width: 74px; height: 74px; border-radius: 50%; object-fit: cover; border: 4px solid #caa24a; }
-
   .num {
     flex: 0 0 72px;
     height: 100%;
@@ -267,13 +223,42 @@
   }
 
   .piece { position: absolute; right: 38px; font-size: 36px; opacity: 0.85; }
-
   .p1 { top: 35px; } .p2 { top: 135px; } .p3 { top: 235px; } .p4 { top: 335px; }
   .p5 { top: 435px; } .p6 { top: 535px; } .p7 { top: 635px; } .p8 { top: 735px; }
 
   svg { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
   .line { fill: none; stroke: #0b321c; stroke-width: 5; stroke-linecap: square; stroke-linejoin: miter; }
   .trophy { position: absolute; right: 140px; top: 330px; font-size: 120px; z-index: 3; }
+
+  .winner-slot {
+    width: 250px;
+    height: 62px;
+    padding: 6px 70px 6px 14px;
+    opacity: 0;
+    transform: scale(0.96);
+    transition: opacity .3s ease, transform .3s ease;
+  }
+
+  .winner-slot.filled, .champion-slot.filled { opacity: 1; transform: scale(1); }
+  .winner-slot .slot-name { font-size: 22px; font-weight: bold; white-space: nowrap; }
+  .winner-slot .slot-avatar { position: absolute; right: 8px; width: 50px; height: 50px; object-fit: cover; border-radius: 50%; border: 3px solid #caa24a; background: white; }
+  .wq1 { left: 610px; top: 99px; } .wq2 { left: 610px; top: 299px; } .wq3 { left: 610px; top: 499px; } .wq4 { left: 610px; top: 699px; }
+  .ws1 { left: 1010px; top: 199px; } .ws2 { left: 1010px; top: 599px; }
+
+  .champion-slot {
+    right: 84px;
+    top: 500px;
+    width: 300px;
+    height: 92px;
+    padding: 8px 95px 8px 16px;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity .3s ease, transform .3s ease;
+  }
+
+  .champion-slot .crown { position: absolute; top: -38px; left: 50%; transform: translateX(-50%); font-size: 42px; }
+  .champion-slot .slot-name { font-size: 30px; font-weight: bold; }
+  .champion-slot .slot-avatar { position: absolute; right: 10px; width: 74px; height: 74px; border-radius: 50%; object-fit: cover; border: 4px solid #caa24a; }
 
   .tour-controls {
     position: absolute;
@@ -297,14 +282,14 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.25);
   }
 
-  .tour-btn.gold { background: #b78a19; color: #fff; }
+  .tour-btn.gold { background: #b78a19; }
   .tour-btn.end { background: #8a3b24; }
 
   .match-modal {
     display: none;
     position: fixed;
     inset: 0;
-    z-index: 80;
+    z-index: 120;
     background: rgba(0,0,0,0.45);
     align-items: center;
     justify-content: center;
@@ -312,66 +297,23 @@
   }
 
   .match-modal.show { display: flex; }
-
-  .match-box {
-    width: min(620px, 94vw);
-    background: rgba(255,250,235,0.98);
-    border: 3px solid #9b823d;
-    border-radius: 24px;
-    box-shadow: 0 18px 55px rgba(0,0,0,0.45);
-    padding: 24px;
-    text-align: center;
-  }
-
+  .match-box { width: min(620px, 94vw); background: rgba(255,250,235,0.98); border: 3px solid #9b823d; border-radius: 24px; box-shadow: 0 18px 55px rgba(0,0,0,0.45); padding: 24px; text-align: center; }
   .match-box h2 { margin: 0 0 10px; font-size: 32px; }
   .match-box p { margin: 0 0 20px; font-family: Arial, sans-serif; }
-
-  .choice-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-  }
-
-  .choice-btn {
-    border: 2px solid #9b823d;
-    background: white;
-    border-radius: 18px;
-    padding: 14px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 22px;
-    color: #0b321c;
-  }
-
-  .choice-btn img {
-    display: block;
-    width: 110px;
-    height: 110px;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 4px solid #caa24a;
-    margin: 0 auto 10px;
-  }
-
+  .choice-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .choice-btn { border: 2px solid #9b823d; background: white; border-radius: 18px; padding: 14px; cursor: pointer; font-weight: bold; font-size: 22px; color: #0b321c; }
+  .choice-btn img { display: block; width: 110px; height: 110px; object-fit: cover; border-radius: 50%; border: 4px solid #caa24a; margin: 0 auto 10px; }
   .choice-btn .piece-big { display: block; font-size: 74px; margin-bottom: 10px; }
 
-  .confetti {
-    position: fixed;
-    top: -20px;
-    width: 10px;
-    height: 16px;
-    z-index: 100;
-    animation: fall linear forwards;
-  }
-
-  @keyframes fall {
-    to { transform: translateY(110vh) rotate(720deg); opacity: 0.9; }
-  }
+  .confetti { position: fixed; top: -20px; width: 10px; height: 16px; z-index: 140; animation: fall linear forwards; }
+  @keyframes fall { to { transform: translateY(110vh) rotate(720deg); opacity: 0.9; } }
 
   @media (max-width: 900px) {
     body { background-position: center top; background-size: auto 100vh; }
     .settings-btn { right: 10px; bottom: 10px; padding: 8px 12px; font-size: 13px; }
+    .history-btn { left: 10px; bottom: 10px; padding: 8px 12px; font-size: 13px; }
     .settings-panel { right: 10px; bottom: 56px; }
+    .history-panel { left: 10px; bottom: 56px; width: calc(100vw - 20px); }
     .mini-bracket-button { width: 92vw; right: 4vw; top: auto; bottom: 6vh; }
     .mini-frame { height: 215px; }
     .mini-content { transform: scale(0.255); }
@@ -387,7 +329,6 @@
     .zoom-view .p1 { top: 28px; } .zoom-view .p2 { top: 116px; } .zoom-view .p3 { top: 204px; } .zoom-view .p4 { top: 292px; }
     .zoom-view .p5 { top: 380px; } .zoom-view .p6 { top: 468px; } .zoom-view .p7 { top: 556px; } .zoom-view .p8 { top: 644px; }
     .zoom-view .trophy { right: 55px; top: 330px; font-size: 78px; }
-    .close-btn { top: 10px; right: 10px; padding: 8px 14px; font-size: 14px; }
     .zoom-view .winner-slot { width: 190px; height: 52px; padding-right: 58px; }
     .zoom-view .winner-slot .slot-name { font-size: 18px; }
     .zoom-view .winner-slot .slot-avatar { width: 42px; height: 42px; }
@@ -399,13 +340,23 @@
     .zoom-view .champion-slot .slot-avatar { width: 58px; height: 58px; }
     .tour-controls { right: 34px; bottom: 30px; }
     .tour-btn { padding: 9px 14px; font-size: 14px; }
+    .close-btn { top: 10px; right: 10px; padding: 8px 14px; font-size: 14px; }
   }
 </style>
 </head>
 <body>
 
-<button class="settings-btn" onclick="toggleSettings()">⚙ Podešavanja</button>
-<div class="settings-panel" id="settingsPanel">
+<button class="floating-btn history-btn" onclick="toggleHistory()">📜 Istorija</button>
+<div class="panel history-panel" id="historyPanel">
+  <h3>Istorija turnira</h3>
+  <div id="historyList"></div>
+  <h4>Sumarizacija bodova</h4>
+  <div id="scoreSummary"></div>
+  <button class="action-btn secondary-btn" onclick="clearHistory()">Obriši istoriju</button>
+</div>
+
+<button class="floating-btn settings-btn" onclick="toggleSettings()">⚙ Podešavanja</button>
+<div class="panel settings-panel" id="settingsPanel">
   <h3>Napravi turnir</h3>
   <p>Random izmešaj trenutnih 8 igrača i napravi novo prvo kolo.</p>
   <button class="action-btn" onclick="generateRandomDraw()">🎲 Generiši žreb</button>
@@ -456,7 +407,7 @@
   let activeMatchIndex = 0;
 
   function emptyTournament() {
-    return { qf: [null, null, null, null], sf: [null, null], champion: null, status: 'ready' };
+    return { qf: [null, null, null, null], sf: [null, null], champion: null, savedToHistory: false };
   }
 
   function buildPlayerHtml(player, index) {
@@ -465,8 +416,7 @@
         <span class="num">${index + 1}</span>
         <span class="name">${player.name}</span>
         ${player.img ? `<img class="avatar" src="${player.img}" alt="${player.name}">` : '<span class="piece">♟</span>'}
-      </div>
-    `;
+      </div>`;
   }
 
   function slotHtml(cls, player) {
@@ -502,8 +452,7 @@
       ${slotHtml('ws1', tournament.sf[0])}
       ${slotHtml('ws2', tournament.sf[1])}
       ${championHtml(tournament.champion)}
-      <div class="tour-controls">${tourButtonHtml()}</div>
-    `;
+      <div class="tour-controls">${tourButtonHtml()}</div>`;
   }
 
   function tourButtonHtml() {
@@ -539,12 +488,9 @@
       if (activeRound === 'final') celebrate();
       return;
     }
-
     const [a, b] = matches[activeMatchIndex];
     if (!a || !b) { activeMatchIndex++; showNextMatch(); return; }
-
-    const title = activeRound === 'qf' ? 'Prvo kolo' : activeRound === 'sf' ? 'Polufinale' : 'Finale';
-    document.getElementById('matchTitle').textContent = title;
+    document.getElementById('matchTitle').textContent = activeRound === 'qf' ? 'Prvo kolo' : activeRound === 'sf' ? 'Polufinale' : 'Finale';
     document.getElementById('matchSubtitle').textContent = `Ko je pobedio: ${a.name} ili ${b.name}?`;
     setChoice('choiceA', a);
     setChoice('choiceB', b);
@@ -560,7 +506,10 @@
   function chooseWinner(player) {
     if (activeRound === 'qf') tournament.qf[activeMatchIndex] = player;
     if (activeRound === 'sf') tournament.sf[activeMatchIndex] = player;
-    if (activeRound === 'final') tournament.champion = player;
+    if (activeRound === 'final') {
+      tournament.champion = player;
+      saveTournamentToHistory(player);
+    }
     activeMatchIndex++;
     saveTournament();
     renderAll();
@@ -606,7 +555,7 @@
     localStorage.setItem('fruskogoracPlayers', JSON.stringify(currentPlayers));
     localStorage.removeItem('fruskogoracTournament');
     renderAll();
-    document.getElementById('settingsPanel').classList.remove('show');
+    closePanels();
   }
 
   function resetDraw() {
@@ -615,7 +564,7 @@
     localStorage.removeItem('fruskogoracPlayers');
     localStorage.removeItem('fruskogoracTournament');
     renderAll();
-    document.getElementById('settingsPanel').classList.remove('show');
+    closePanels();
   }
 
   function loadPlayers() {
@@ -634,20 +583,73 @@
     return emptyTournament();
   }
 
-  function saveTournament() {
-    localStorage.setItem('fruskogoracTournament', JSON.stringify(tournament));
+  function saveTournament() { localStorage.setItem('fruskogoracTournament', JSON.stringify(tournament)); }
+
+  function getHistory() {
+    try {
+      const saved = JSON.parse(localStorage.getItem('fruskogoracHistory'));
+      return Array.isArray(saved) ? saved : [];
+    } catch (e) { return []; }
   }
 
-  function toggleSettings() { document.getElementById('settingsPanel').classList.toggle('show'); }
+  function saveHistory(history) { localStorage.setItem('fruskogoracHistory', JSON.stringify(history)); }
+
+  function saveTournamentToHistory(winner) {
+    if (tournament.savedToHistory) return;
+    const history = getHistory();
+    history.push({ id: history.length + 1, date: new Date().toLocaleString('sr-RS'), winner: winner.name, draw: currentPlayers.map(p => p.name) });
+    saveHistory(history);
+    tournament.savedToHistory = true;
+    saveTournament();
+  }
+
+  function renderHistory() {
+    const history = getHistory();
+    const historyList = document.getElementById('historyList');
+    const scoreSummary = document.getElementById('scoreSummary');
+    if (!history.length) {
+      historyList.innerHTML = '<p>Još nema odigranih turnira.</p>';
+      scoreSummary.innerHTML = '<p>Nema bodova za prikaz.</p>';
+      return;
+    }
+    historyList.innerHTML = '<ol>' + history.map(item => `<li>${item.date} <strong>(${item.winner})</strong></li>`).join('') + '</ol>';
+    const scores = {};
+    defaultPlayers.forEach(p => scores[p.name] = 0);
+    history.forEach(item => scores[item.winner] = (scores[item.winner] || 0) + 1);
+    const rows = Object.entries(scores).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).map(([name, wins]) => `<tr><td>${name}</td><td>${wins}</td></tr>`).join('');
+    scoreSummary.innerHTML = `<table class="history-table"><thead><tr><th>Učesnik</th><th>Osvojeni turniri</th></tr></thead><tbody>${rows}</tbody></table>`;
+  }
+
+  function clearHistory() {
+    localStorage.removeItem('fruskogoracHistory');
+    renderHistory();
+  }
+
+  function closePanels() {
+    document.getElementById('settingsPanel').classList.remove('show');
+    document.getElementById('historyPanel').classList.remove('show');
+  }
+
+  function toggleSettings() {
+    document.getElementById('settingsPanel').classList.toggle('show');
+    document.getElementById('historyPanel').classList.remove('show');
+  }
+
+  function toggleHistory() {
+    renderHistory();
+    document.getElementById('historyPanel').classList.toggle('show');
+    document.getElementById('settingsPanel').classList.remove('show');
+  }
 
   function openBracket() {
     document.body.classList.add('zoomed');
-    document.getElementById('settingsPanel').classList.remove('show');
+    closePanels();
     window.scrollTo(0, 0);
   }
 
   function closeBracket() {
     document.body.classList.remove('zoomed');
+    closeModal();
     window.scrollTo(0, 0);
   }
 
