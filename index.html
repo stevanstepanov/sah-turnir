@@ -28,9 +28,53 @@
     position: relative;
   }
 
-  .hero-title {
-    display: none;
+  .settings-btn {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 20;
+    border: 2px solid #9b823d;
+    background: rgba(255,250,235,0.95);
+    color: #0b321c;
+    border-radius: 999px;
+    padding: 10px 16px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.25);
   }
+
+  .settings-panel {
+    display: none;
+    position: fixed;
+    top: 62px;
+    right: 16px;
+    z-index: 21;
+    width: min(330px, calc(100vw - 32px));
+    padding: 16px;
+    border: 2px solid #9b823d;
+    border-radius: 18px;
+    background: rgba(255,250,235,0.98);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.35);
+    font-family: Arial, sans-serif;
+  }
+
+  .settings-panel.show { display: block; }
+  .settings-panel h3 { margin: 0 0 10px; color: #0b321c; }
+  .settings-panel p { margin: 0 0 12px; font-size: 14px; line-height: 1.35; }
+
+  .action-btn {
+    width: 100%;
+    margin-top: 8px;
+    border: 0;
+    border-radius: 12px;
+    padding: 11px 12px;
+    background: #06441f;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .secondary-btn { background: #8a6a24; }
 
   .mini-bracket-button {
     position: absolute;
@@ -46,10 +90,7 @@
     transition: transform 0.18s ease, filter 0.18s ease;
   }
 
-  .mini-bracket-button:hover {
-    transform: scale(1.035);
-    filter: brightness(1.03);
-  }
+  .mini-bracket-button:hover { transform: scale(1.035); filter: brightness(1.03); }
 
   .mini-bracket-button .bracket-card {
     height: 300px;
@@ -69,19 +110,9 @@
     border-width: 1px;
   }
 
-  .mini-bracket-button .num {
-    flex-basis: 22px;
-    font-size: 9px;
-    border-radius: 3px 0 0 3px;
-  }
-
+  .mini-bracket-button .num { flex-basis: 22px; font-size: 9px; border-radius: 3px 0 0 3px; }
   .mini-bracket-button .name { font-size: 10px; }
-  .mini-bracket-button .avatar {
-    right: 3px;
-    width: 17px;
-    height: 17px;
-    border-width: 1px;
-  }
+  .mini-bracket-button .avatar { right: 3px; width: 17px; height: 17px; border-width: 1px; }
   .mini-bracket-button .piece { right: 9px; font-size: 10px; }
 
   .mini-bracket-button .p1 { top: 18px; }
@@ -92,14 +123,15 @@
   .mini-bracket-button .p6 { top: 195px; }
   .mini-bracket-button .p7 { top: 230px; }
   .mini-bracket-button .p8 { top: 265px; }
-  .mini-bracket-button svg {
-      transform: scale(0.35);
-      transform-origin: top left;
-      width: 1580px;
-      height: 850px;
-    }
 
-    .mini-bracket-button .line { stroke-width: 5; }
+  .mini-bracket-button svg {
+    transform: scale(0.35);
+    transform-origin: top left;
+    width: 1580px;
+    height: 850px;
+  }
+
+  .mini-bracket-button .line { stroke-width: 5; }
   .mini-bracket-button .trophy { right: 24px; top: 98px; font-size: 28px; }
 
   .zoom-view {
@@ -116,10 +148,7 @@
   body.zoomed .hero { display: none; }
   body.zoomed .zoom-view { display: flex; }
 
-  .zoom-wrap {
-    width: min(96vw, 1680px);
-    position: relative;
-  }
+  .zoom-wrap { width: min(96vw, 1680px); position: relative; }
 
   .close-btn {
     position: fixed;
@@ -185,10 +214,7 @@
     border-radius: 10px 0 0 10px;
   }
 
-  .name {
-    font-size: 36px;
-    font-weight: bold;
-  }
+  .name { font-size: 36px; font-weight: bold; }
 
   .avatar {
     position: absolute;
@@ -202,235 +228,104 @@
     box-shadow: 0 6px 15px rgba(0,0,0,0.5);
   }
 
-  .piece {
-    position: absolute;
-    right: 38px;
-    font-size: 36px;
-    opacity: 0.85;
-  }
+  .piece { position: absolute; right: 38px; font-size: 36px; opacity: 0.85; }
 
-  .p1 { top: 35px; }
-  .p2 { top: 135px; }
-  .p3 { top: 235px; }
-  .p4 { top: 335px; }
-  .p5 { top: 435px; }
-  .p6 { top: 535px; }
-  .p7 { top: 635px; }
-  .p8 { top: 735px; }
+  .p1 { top: 35px; } .p2 { top: 135px; } .p3 { top: 235px; } .p4 { top: 335px; }
+  .p5 { top: 435px; } .p6 { top: 535px; } .p7 { top: 635px; } .p8 { top: 735px; }
 
-  svg {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 2;
-    pointer-events: none;
-  }
-
-  .line {
-    fill: none;
-    stroke: #0b321c;
-    stroke-width: 5;
-  }
-
-  .trophy {
-    position: absolute;
-    right: 140px;
-    top: 330px;
-    font-size: 120px;
-    z-index: 3;
-  }
+  svg { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
+  .line { fill: none; stroke: #0b321c; stroke-width: 5; }
+  .trophy { position: absolute; right: 140px; top: 330px; font-size: 120px; z-index: 3; }
 
   @media (max-width: 900px) {
-    body {
-      background-position: center top;
-      background-size: auto 100vh;
-    }
-
-    .hero {
-      min-height: 100vh;
-      padding: 0 12px;
-    }
-
-    .mini-bracket-button {
-      width: 88vw;
-      right: 6vw;
-      top: auto;
-      bottom: 7vh;
-    }
-
-    .mini-bracket-button .bracket-card {
-      height: 235px;
-      border-radius: 12px;
-    }
-
-    .mini-bracket-button .player {
-      left: 12px;
-      width: 135px;
-      height: 19px;
-      gap: 4px;
-      padding-right: 24px;
-    }
-
-    .mini-bracket-button .num {
-      flex-basis: 20px;
-      font-size: 9px;
-    }
-
-    .mini-bracket-button .name {
-      font-size: 10px;
-    }
-
-    .mini-bracket-button .avatar {
-      width: 16px;
-      height: 16px;
-      right: 3px;
-      border-width: 1px;
-    }
-
-    .mini-bracket-button .piece {
-      font-size: 10px;
-      right: 8px;
-    }
-
-    .mini-bracket-button .p1 { top: 12px; }
-    .mini-bracket-button .p2 { top: 40px; }
-    .mini-bracket-button .p3 { top: 68px; }
-    .mini-bracket-button .p4 { top: 96px; }
-    .mini-bracket-button .p5 { top: 124px; }
-    .mini-bracket-button .p6 { top: 152px; }
-    .mini-bracket-button .p7 { top: 180px; }
-    .mini-bracket-button .p8 { top: 208px; }
-
-    .mini-bracket-button .trophy {
-      right: 18px;
-      top: 92px;
-      font-size: 25px;
-    }
-
-    .zoom-view {
-      min-height: 100vh;
-      padding: 12px;
-      align-items: flex-start;
-      overflow-x: auto;
-      justify-content: flex-start;
-    }
-
-    .zoom-wrap {
-      width: 980px;
-      min-width: 980px;
-    }
-
-    .zoom-view .bracket-card {
-      height: 760px;
-      border-radius: 20px;
-    }
-
-    .zoom-view .player {
-      left: 24px;
-      width: 330px;
-      height: 68px;
-      padding-right: 82px;
-      gap: 12px;
-    }
-
-    .zoom-view .num {
-      flex-basis: 52px;
-      font-size: 24px;
-    }
-
-    .zoom-view .name {
-      font-size: 26px;
-    }
-
-    .zoom-view .avatar {
-      width: 58px;
-      height: 58px;
-      right: 8px;
-      border-width: 3px;
-    }
-
-    .zoom-view .piece {
-      font-size: 28px;
-      right: 22px;
-    }
-
-    .zoom-view .p1 { top: 28px; }
-    .zoom-view .p2 { top: 116px; }
-    .zoom-view .p3 { top: 204px; }
-    .zoom-view .p4 { top: 292px; }
-    .zoom-view .p5 { top: 380px; }
-    .zoom-view .p6 { top: 468px; }
-    .zoom-view .p7 { top: 556px; }
-    .zoom-view .p8 { top: 644px; }
-
-    .zoom-view .trophy {
-      right: 55px;
-      top: 330px;
-      font-size: 78px;
-    }
-
-    .close-btn {
-      top: 10px;
-      right: 10px;
-      padding: 8px 14px;
-      font-size: 14px;
-    }
+    body { background-position: center top; background-size: auto 100vh; }
+    .hero { min-height: 100vh; padding: 0 12px; }
+    .settings-btn { top: 10px; right: 10px; padding: 8px 12px; font-size: 13px; }
+    .settings-panel { top: 52px; right: 10px; }
+    .mini-bracket-button { width: 88vw; right: 6vw; top: auto; bottom: 7vh; }
+    .mini-bracket-button .bracket-card { height: 235px; border-radius: 12px; }
+    .mini-bracket-button .player { left: 12px; width: 135px; height: 19px; gap: 4px; padding-right: 24px; }
+    .mini-bracket-button .num { flex-basis: 20px; font-size: 9px; }
+    .mini-bracket-button .name { font-size: 10px; }
+    .mini-bracket-button .avatar { width: 16px; height: 16px; right: 3px; border-width: 1px; }
+    .mini-bracket-button .piece { font-size: 10px; right: 8px; }
+    .mini-bracket-button .p1 { top: 12px; } .mini-bracket-button .p2 { top: 40px; }
+    .mini-bracket-button .p3 { top: 68px; } .mini-bracket-button .p4 { top: 96px; }
+    .mini-bracket-button .p5 { top: 124px; } .mini-bracket-button .p6 { top: 152px; }
+    .mini-bracket-button .p7 { top: 180px; } .mini-bracket-button .p8 { top: 208px; }
+    .mini-bracket-button .trophy { right: 18px; top: 92px; font-size: 25px; }
+    .zoom-view { min-height: 100vh; padding: 12px; align-items: flex-start; overflow-x: auto; justify-content: flex-start; }
+    .zoom-wrap { width: 980px; min-width: 980px; }
+    .zoom-view .bracket-card { height: 760px; border-radius: 20px; }
+    .zoom-view .player { left: 24px; width: 330px; height: 68px; padding-right: 82px; gap: 12px; }
+    .zoom-view .num { flex-basis: 52px; font-size: 24px; }
+    .zoom-view .name { font-size: 26px; }
+    .zoom-view .avatar { width: 58px; height: 58px; right: 8px; border-width: 3px; }
+    .zoom-view .piece { font-size: 28px; right: 22px; }
+    .zoom-view .p1 { top: 28px; } .zoom-view .p2 { top: 116px; } .zoom-view .p3 { top: 204px; } .zoom-view .p4 { top: 292px; }
+    .zoom-view .p5 { top: 380px; } .zoom-view .p6 { top: 468px; } .zoom-view .p7 { top: 556px; } .zoom-view .p8 { top: 644px; }
+    .zoom-view .trophy { right: 55px; top: 330px; font-size: 78px; }
+    .close-btn { top: 10px; right: 10px; padding: 8px 14px; font-size: 14px; }
   }
 
   @media (max-width: 480px) {
-    .mini-bracket-button {
-      width: 92vw;
-      right: 4vw;
-      bottom: 6vh;
-    }
-
-    .mini-bracket-button .bracket-card {
-      height: 215px;
-    }
+    .mini-bracket-button { width: 92vw; right: 4vw; bottom: 6vh; }
+    .mini-bracket-button .bracket-card { height: 215px; }
   }
 </style>
 </head>
 <body>
 
+<button class="settings-btn" onclick="toggleSettings()">⚙ Podešavanja</button>
+<div class="settings-panel" id="settingsPanel">
+  <h3>Napravi turnir</h3>
+  <p>Random izmešaj trenutnih 8 igrača i napravi novo prvo kolo.</p>
+  <button class="action-btn" onclick="generateRandomDraw()">🎲 Generiši žreb</button>
+  <button class="action-btn secondary-btn" onclick="resetDraw()">Vrati početni redosled</button>
+</div>
+
 <section class="hero">
   <button class="mini-bracket-button" onclick="openBracket()" aria-label="Otvori žreb">
-    <div class="bracket-card">
-      <div class="player p1"><span class="num">1</span><span class="name">Mosa</span><img class="avatar" src="mosa.jpg"></div>
-      <div class="player p2"><span class="num">2</span><span class="name">David</span><img class="avatar" src="david.jpg"></div>
-      <div class="player p3"><span class="num">3</span><span class="name">Igor</span><img class="avatar" src="igor.jpg"></div>
-      <div class="player p4"><span class="num">4</span><span class="name">Nedja</span><span class="piece">♟</span></div>
-      <div class="player p5"><span class="num">5</span><span class="name">Ceda</span><img class="avatar" src="ceda.jpg"></div>
-      <div class="player p6"><span class="num">6</span><span class="name">Steva</span><img class="avatar" src="steva.jpg"></div>
-      <div class="player p7"><span class="num">7</span><span class="name">Mladja</span><img class="avatar" src="mladja.jpg"></div>
-      <div class="player p8"><span class="num">8</span><span class="name">Jagosh</span><img class="avatar" src="jagosh.jpg"></div>
-      <svg viewBox="0 0 1580 850" preserveAspectRatio="none">
-        <path class="line" d="M520 80 H660 V180 H520" /><path class="line" d="M660 130 H820" />
-        <path class="line" d="M520 280 H660 V380 H520" /><path class="line" d="M660 330 H820" />
-        <path class="line" d="M520 480 H660 V580 H520" /><path class="line" d="M660 530 H820" />
-        <path class="line" d="M520 680 H660 V780 H520" /><path class="line" d="M660 730 H820" />
-        <path class="line" d="M820 130 H980 V330 H820" /><path class="line" d="M980 230 H1130" />
-        <path class="line" d="M820 530 H980 V730 H820" /><path class="line" d="M980 630 H1130" />
-        <path class="line" d="M1130 230 H1280 V630 H1130" /><path class="line" d="M1280 430 H1430" />
-      </svg>
-      <div class="trophy">🏆</div>
-    </div>
+    <div class="bracket-card bracket mini"></div>
   </button>
 </section>
 
 <section class="zoom-view">
   <button class="close-btn" onclick="closeBracket()">Nazad</button>
   <div class="zoom-wrap">
-    <div class="bracket-card">
-      <div class="player p1"><span class="num">1</span><span class="name">Mosa</span><img class="avatar" src="mosa.jpg"></div>
-      <div class="player p2"><span class="num">2</span><span class="name">David</span><img class="avatar" src="david.jpg"></div>
-      <div class="player p3"><span class="num">3</span><span class="name">Igor</span><img class="avatar" src="igor.jpg"></div>
-      <div class="player p4"><span class="num">4</span><span class="name">Nedja</span><span class="piece">♟</span></div>
-      <div class="player p5"><span class="num">5</span><span class="name">Ceda</span><img class="avatar" src="ceda.jpg"></div>
-      <div class="player p6"><span class="num">6</span><span class="name">Steva</span><img class="avatar" src="steva.jpg"></div>
-      <div class="player p7"><span class="num">7</span><span class="name">Mladja</span><img class="avatar" src="mladja.jpg"></div>
-      <div class="player p8"><span class="num">8</span><span class="name">Jagosh</span><img class="avatar" src="jagosh.jpg"></div>
+    <div class="bracket-card bracket zoom"></div>
+  </div>
+</section>
 
+<script>
+  const defaultPlayers = [
+    { name: 'Mosa', img: 'mosa.jpg' },
+    { name: 'David', img: 'david.jpg' },
+    { name: 'Igor', img: 'igor.jpg' },
+    { name: 'Nedja', img: null },
+    { name: 'Ceda', img: 'ceda.jpg' },
+    { name: 'Steva', img: 'steva.jpg' },
+    { name: 'Mladja', img: 'mladja.jpg' },
+    { name: 'Jagosh', img: 'jagosh.jpg' }
+  ];
+
+  let currentPlayers = loadPlayers();
+
+  function buildBracket(container, players) {
+    container.innerHTML = '';
+
+    players.forEach((player, index) => {
+      const div = document.createElement('div');
+      div.className = `player p${index + 1}`;
+      div.innerHTML = `
+        <span class="num">${index + 1}</span>
+        <span class="name">${player.name}</span>
+        ${player.img ? `<img class="avatar" src="${player.img}" alt="${player.name}">` : '<span class="piece">♟</span>'}
+      `;
+      container.appendChild(div);
+    });
+
+    container.insertAdjacentHTML('beforeend', `
       <svg viewBox="0 0 1580 850" preserveAspectRatio="none">
         <path class="line" d="M520 80 H660 V180 H520" /><path class="line" d="M660 130 H820" />
         <path class="line" d="M520 280 H660 V380 H520" /><path class="line" d="M660 330 H820" />
@@ -441,11 +336,47 @@
         <path class="line" d="M1130 230 H1280 V630 H1130" /><path class="line" d="M1280 430 H1430" />
       </svg>
       <div class="trophy">🏆</div>
-    </div>
-  </div>
-</section>
+    `);
+  }
 
-<script>
+  function renderAll() {
+    document.querySelectorAll('.bracket').forEach(container => buildBracket(container, currentPlayers));
+  }
+
+  function shuffle(array) {
+    const copy = [...array];
+    for (let i = copy.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+  }
+
+  function generateRandomDraw() {
+    currentPlayers = shuffle(defaultPlayers);
+    localStorage.setItem('fruskogoracPlayers', JSON.stringify(currentPlayers));
+    renderAll();
+    document.getElementById('settingsPanel').classList.remove('show');
+  }
+
+  function resetDraw() {
+    currentPlayers = [...defaultPlayers];
+    localStorage.removeItem('fruskogoracPlayers');
+    renderAll();
+  }
+
+  function loadPlayers() {
+    try {
+      const saved = JSON.parse(localStorage.getItem('fruskogoracPlayers'));
+      if (Array.isArray(saved) && saved.length === 8) return saved;
+    } catch (e) {}
+    return [...defaultPlayers];
+  }
+
+  function toggleSettings() {
+    document.getElementById('settingsPanel').classList.toggle('show');
+  }
+
   function openBracket() {
     document.body.classList.add('zoomed');
     window.scrollTo(0, 0);
@@ -455,6 +386,8 @@
     document.body.classList.remove('zoomed');
     window.scrollTo(0, 0);
   }
+
+  renderAll();
 </script>
 
 <!--
