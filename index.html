@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fruškogorac - Komšijski šahovski turnir</title>
+<style>
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    min-height: 100%;
+    font-family: Georgia, "Times New Roman", serif;
+    background: #efe7d2;
+    color: #0b321c;
+  }
+
+  body {
+    min-height: 100vh;
+    background:
+      linear-gradient(rgba(245,236,210,0.35), rgba(245,236,210,0.35)),
+      url("fruskogorac-bg.png") center top / cover no-repeat fixed;
+    overflow-x: hidden;
+  }
+
+  .hero {
+    min-height: 100vh;
+    position: relative;
+  }
+
+  .hero-title {
+    display: none;
+  }
+
+  .mini-bracket-button {
+    position: absolute;
+    z-index: 2;
+    right: 7vw;
+    top: 44vh;
+    width: min(520px, 34vw);
+    border: 0;
+    padding: 0;
+    background: transparent;
+    cursor: pointer;
+    transform: scale(1);
+    transition: transform 0.18s ease, filter 0.18s ease;
+  }
+
+  .mini-bracket-button:hover {
+    transform: scale(1.035);
+    filter: brightness(1.03);
+  }
+
+  .mini-bracket-button .bracket-card {
+    height: 300px;
+    border-radius: 12px;
+    border-width: 2px;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.38);
+    background: rgba(255, 250, 235, 0.96);
+  }
+
+  .mini-bracket-button .player {
+    left: 18px;
+    width: 150px;
+    height: 20px;
+    gap: 6px;
+    padding: 2px 24px 2px 0;
+    border-radius: 4px;
+    border-width: 1px;
+  }
+
+  .mini-bracket-button .num {
+    flex-basis: 22px;
+    font-size: 9px;
+    border-radius: 3px 0 0 3px;
+  }
+
+  .mini-bracket-button .name { font-size: 10px; }
+  .mini-bracket-button .avatar {
+    right: 3px;
+    width: 17px;
+    height: 17px;
+    border-width: 1px;
+  }
+  .mini-bracket-button .piece { right: 9px; font-size: 10px; }
+
+  .mini-bracket-button .p1 { top: 18px; }
+  .mini-bracket-button .p2 { top: 54px; }
+  .mini-bracket-button .p3 { top: 89px; }
+  .mini-bracket-button .p4 { top: 124px; }
+  .mini-bracket-button .p5 { top: 159px; }
+  .mini-bracket-button .p6 { top: 195px; }
+  .mini-bracket-button .p7 { top: 230px; }
+  .mini-bracket-button .p8 { top: 265px; }
+  .mini-bracket-button .line { stroke-width: 5; }
+  .mini-bracket-button .trophy { right: 24px; top: 98px; font-size: 28px; }
+
+  .zoom-view {
+    min-height: 100vh;
+    padding: 28px 24px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background:
+      linear-gradient(rgba(245,236,210,0.30), rgba(245,236,210,0.30)),
+      url("fruskogorac-bg.png") center / cover no-repeat fixed;
+  }
+
+  body.zoomed .hero { display: none; }
+  body.zoomed .zoom-view { display: flex; }
+
+  .zoom-wrap {
+    width: min(96vw, 1680px);
+    position: relative;
+  }
+
+  .close-btn {
+    position: fixed;
+    top: 18px;
+    right: 22px;
+    z-index: 10;
+    border: 2px solid #9b823d;
+    background: rgba(255,250,235,0.94);
+    color: #0b321c;
+    border-radius: 999px;
+    padding: 10px 18px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+  }
+
+  .bracket-card {
+    position: relative;
+    height: 850px;
+    border-radius: 28px;
+    background: rgba(255, 250, 235, 0.97);
+    border: 3px solid rgba(137, 108, 45, 0.75);
+    box-shadow: 0 22px 55px rgba(0,0,0,0.35);
+    overflow: hidden;
+  }
+
+  .bracket-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    opacity: 0.12;
+    background: repeating-conic-gradient(#f5ecd2 0% 25%, #d6e2c7 0% 50%) 0 0 / 78px 78px;
+    z-index: 0;
+  }
+
+  .player {
+    position: absolute;
+    left: 70px;
+    width: 450px;
+    height: 86px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 8px 120px 8px 0;
+    border: 2px solid #9b823d;
+    border-radius: 12px;
+    background: rgba(255, 253, 244, 0.98);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.13);
+    z-index: 3;
+  }
+
+  .num {
+    flex: 0 0 72px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #06441f;
+    color: white;
+    font-size: 34px;
+    font-weight: bold;
+    border-radius: 10px 0 0 10px;
+  }
+
+  .name {
+    font-size: 36px;
+    font-weight: bold;
+  }
+
+  .avatar {
+    position: absolute;
+    right: 12px;
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid #caa24a;
+    background: #fff;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.5);
+  }
+
+  .piece {
+    position: absolute;
+    right: 38px;
+    font-size: 36px;
+    opacity: 0.85;
+  }
+
+  .p1 { top: 35px; }
+  .p2 { top: 135px; }
+  .p3 { top: 235px; }
+  .p4 { top: 335px; }
+  .p5 { top: 435px; }
+  .p6 { top: 535px; }
+  .p7 { top: 635px; }
+  .p8 { top: 735px; }
+
+  svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .line {
+    fill: none;
+    stroke: #0b321c;
+    stroke-width: 5;
+  }
+
+  .trophy {
+    position: absolute;
+    right: 140px;
+    top: 330px;
+    font-size: 120px;
+    z-index: 3;
+  }
+
+  @media (max-width: 900px) {
+    .zoom-view { padding: 12px; align-items: flex-start; }
+    .bracket-card { height: 760px; }
+    .player { left: 22px; width: 335px; height: 68px; padding-right: 82px; }
+    .num { flex-basis: 52px; font-size: 24px; }
+    .name { font-size: 26px; }
+    .avatar { width: 58px; height: 58px; right: 8px; border-width: 3px; }
+    .piece { font-size: 28px; right: 22px; }
+    .p1 { top: 28px; } .p2 { top: 116px; } .p3 { top: 204px; } .p4 { top: 292px; }
+    .p5 { top: 380px; } .p6 { top: 468px; } .p7 { top: 556px; } .p8 { top: 644px; }
+    .trophy { right: 55px; top: 330px; font-size: 78px; }
+  }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <button class="mini-bracket-button" onclick="openBracket()" aria-label="Otvori žreb">
+    <div class="bracket-card">
+      <div class="player p1"><span class="num">1</span><span class="name">Mosa</span><img class="avatar" src="mosa.jpg"></div>
+      <div class="player p2"><span class="num">2</span><span class="name">David</span><img class="avatar" src="david.jpg"></div>
+      <div class="player p3"><span class="num">3</span><span class="name">Igor</span><img class="avatar" src="igor.jpg"></div>
+      <div class="player p4"><span class="num">4</span><span class="name">Nedja</span><span class="piece">♟</span></div>
+      <div class="player p5"><span class="num">5</span><span class="name">Ceda</span><img class="avatar" src="ceda.jpg"></div>
+      <div class="player p6"><span class="num">6</span><span class="name">Steva</span><img class="avatar" src="steva.jpg"></div>
+      <div class="player p7"><span class="num">7</span><span class="name">Mladja</span><img class="avatar" src="mladja.jpg"></div>
+      <div class="player p8"><span class="num">8</span><span class="name">Jagosh</span><img class="avatar" src="jagosh.jpg"></div>
+      <svg viewBox="0 0 1580 850" preserveAspectRatio="none">
+        <path class="line" d="M520 80 H660 V180 H520" /><path class="line" d="M660 130 H820" />
+        <path class="line" d="M520 280 H660 V380 H520" /><path class="line" d="M660 330 H820" />
+        <path class="line" d="M520 480 H660 V580 H520" /><path class="line" d="M660 530 H820" />
+        <path class="line" d="M520 680 H660 V780 H520" /><path class="line" d="M660 730 H820" />
+        <path class="line" d="M820 130 H980 V330 H820" /><path class="line" d="M980 230 H1130" />
+        <path class="line" d="M820 530 H980 V730 H820" /><path class="line" d="M980 630 H1130" />
+        <path class="line" d="M1130 230 H1280 V630 H1130" /><path class="line" d="M1280 430 H1430" />
+      </svg>
+      <div class="trophy">🏆</div>
+    </div>
+  </button>
+</section>
+
+<section class="zoom-view">
+  <button class="close-btn" onclick="closeBracket()">Nazad</button>
+  <div class="zoom-wrap">
+    <div class="bracket-card">
+      <div class="player p1"><span class="num">1</span><span class="name">Mosa</span><img class="avatar" src="mosa.jpg"></div>
+      <div class="player p2"><span class="num">2</span><span class="name">David</span><img class="avatar" src="david.jpg"></div>
+      <div class="player p3"><span class="num">3</span><span class="name">Igor</span><img class="avatar" src="igor.jpg"></div>
+      <div class="player p4"><span class="num">4</span><span class="name">Nedja</span><span class="piece">♟</span></div>
+      <div class="player p5"><span class="num">5</span><span class="name">Ceda</span><img class="avatar" src="ceda.jpg"></div>
+      <div class="player p6"><span class="num">6</span><span class="name">Steva</span><img class="avatar" src="steva.jpg"></div>
+      <div class="player p7"><span class="num">7</span><span class="name">Mladja</span><img class="avatar" src="mladja.jpg"></div>
+      <div class="player p8"><span class="num">8</span><span class="name">Jagosh</span><img class="avatar" src="jagosh.jpg"></div>
+
+      <svg viewBox="0 0 1580 850" preserveAspectRatio="none">
+        <path class="line" d="M520 80 H660 V180 H520" /><path class="line" d="M660 130 H820" />
+        <path class="line" d="M520 280 H660 V380 H520" /><path class="line" d="M660 330 H820" />
+        <path class="line" d="M520 480 H660 V580 H520" /><path class="line" d="M660 530 H820" />
+        <path class="line" d="M520 680 H660 V780 H520" /><path class="line" d="M660 730 H820" />
+        <path class="line" d="M820 130 H980 V330 H820" /><path class="line" d="M980 230 H1130" />
+        <path class="line" d="M820 530 H980 V730 H820" /><path class="line" d="M980 630 H1130" />
+        <path class="line" d="M1130 230 H1280 V630 H1130" /><path class="line" d="M1280 430 H1430" />
+      </svg>
+      <div class="trophy">🏆</div>
+    </div>
+  </div>
+</section>
+
+<script>
+  function openBracket() {
+    document.body.classList.add('zoomed');
+    window.scrollTo(0, 0);
+  }
+
+  function closeBracket() {
+    document.body.classList.remove('zoomed');
+    window.scrollTo(0, 0);
+  }
+</script>
+
+<!--
+Potrebni fajlovi u istom folderu:
+index.html
+fruskogorac-bg.png
+mosa.jpg
+david.jpg
+igor.jpg
+ceda.jpg
+steva.jpg
+mladja.jpg
+jagosh.jpg
+-->
+</body>
+</html>
