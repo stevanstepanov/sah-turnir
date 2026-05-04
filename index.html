@@ -30,7 +30,7 @@
 
   .settings-btn {
     position: fixed;
-    top: 16px;
+    bottom: 16px;
     right: 16px;
     z-index: 20;
     border: 2px solid #9b823d;
@@ -240,7 +240,33 @@
   @media (max-width: 900px) {
     body { background-position: center top; background-size: auto 100vh; }
     .hero { min-height: 100vh; padding: 0 12px; }
-    .settings-btn { top: 10px; right: 10px; padding: 8px 12px; font-size: 13px; }
+    .settings-btn { bottom: 10px; right: 10px; padding: 8px 12px; font-size: 13px; }
+    .settings-panel { top: auto; bottom: 60px; right: 10px; }
+    .mini-bracket-button { width: 88vw; right: 6vw; top: auto; bottom: 7vh; }
+    .mini-bracket-button .bracket-card { height: 235px; border-radius: 12px; }
+    .mini-bracket-button .player { left: 12px; width: 135px; height: 19px; gap: 4px; padding-right: 24px; }
+    .mini-bracket-button .num { flex-basis: 20px; font-size: 9px; }
+    .mini-bracket-button .name { font-size: 10px; }
+    .mini-bracket-button .avatar { width: 16px; height: 16px; right: 3px; border-width: 1px; }
+    .mini-bracket-button .piece { font-size: 10px; right: 8px; }
+    .mini-bracket-button .p1 { top: 12px; } .mini-bracket-button .p2 { top: 40px; }
+    .mini-bracket-button .p3 { top: 68px; } .mini-bracket-button .p4 { top: 96px; }
+    .mini-bracket-button .p5 { top: 124px; } .mini-bracket-button .p6 { top: 152px; }
+    .mini-bracket-button .p7 { top: 180px; } .mini-bracket-button .p8 { top: 208px; }
+    .mini-bracket-button .trophy { right: 18px; top: 92px; font-size: 25px; }
+    .zoom-view { min-height: 100vh; padding: 12px; align-items: flex-start; overflow-x: auto; justify-content: flex-start; }
+    .zoom-wrap { width: 980px; min-width: 980px; }
+    .zoom-view .bracket-card { height: 760px; border-radius: 20px; }
+    .zoom-view .player { left: 24px; width: 330px; height: 68px; padding-right: 82px; gap: 12px; }
+    .zoom-view .num { flex-basis: 52px; font-size: 24px; }
+    .zoom-view .name { font-size: 26px; }
+    .zoom-view .avatar { width: 58px; height: 58px; right: 8px; border-width: 3px; }
+    .zoom-view .piece { font-size: 28px; right: 22px; }
+    .zoom-view .p1 { top: 28px; } .zoom-view .p2 { top: 116px; } .zoom-view .p3 { top: 204px; } .zoom-view .p4 { top: 292px; }
+    .zoom-view .p5 { top: 380px; } .zoom-view .p6 { top: 468px; } .zoom-view .p7 { top: 556px; } .zoom-view .p8 { top: 644px; }
+    .zoom-view .trophy { right: 55px; top: 330px; font-size: 78px; }
+    .close-btn { top: 10px; right: 10px; padding: 8px 14px; font-size: 14px; }
+  }
     .settings-panel { top: 52px; right: 10px; }
     .mini-bracket-button { width: 88vw; right: 6vw; top: auto; bottom: 7vh; }
     .mini-bracket-button .bracket-card { height: 235px; border-radius: 12px; }
