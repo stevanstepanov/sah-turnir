@@ -23,18 +23,13 @@
     overflow-x: hidden;
   }
 
-  .hero {
-    min-height: 100vh;
-    position: relative;
-  }
-
   .settings-btn {
     position: fixed;
-    bottom: 16px;
     right: 16px;
-    z-index: 20;
+    bottom: 16px;
+    z-index: 30;
     border: 2px solid #9b823d;
-    background: rgba(255,250,235,0.95);
+    background: rgba(255,250,235,0.96);
     color: #0b321c;
     border-radius: 999px;
     padding: 10px 16px;
@@ -43,12 +38,15 @@
     box-shadow: 0 4px 15px rgba(0,0,0,0.25);
   }
 
+  body.zoomed .settings-btn,
+  body.zoomed .settings-panel { display: none !important; }
+
   .settings-panel {
     display: none;
     position: fixed;
-    top: 62px;
     right: 16px;
-    z-index: 21;
+    bottom: 64px;
+    z-index: 31;
     width: min(330px, calc(100vw - 32px));
     padding: 16px;
     border: 2px solid #9b823d;
@@ -59,7 +57,7 @@
   }
 
   .settings-panel.show { display: block; }
-  .settings-panel h3 { margin: 0 0 10px; color: #0b321c; }
+  .settings-panel h3 { margin: 0 0 10px; }
   .settings-panel p { margin: 0 0 12px; font-size: 14px; line-height: 1.35; }
 
   .action-btn {
@@ -76,6 +74,8 @@
 
   .secondary-btn { background: #8a6a24; }
 
+  .hero { min-height: 100vh; position: relative; }
+
   .mini-bracket-button {
     position: absolute;
     z-index: 2;
@@ -86,77 +86,56 @@
     padding: 0;
     background: transparent;
     cursor: pointer;
-    transform: scale(1);
     transition: transform 0.18s ease, filter 0.18s ease;
   }
 
   .mini-bracket-button:hover { transform: scale(1.035); filter: brightness(1.03); }
 
-  .mini-bracket-button .bracket-card {
+  .mini-frame {
+    position: relative;
+    width: 100%;
     height: 300px;
     border-radius: 12px;
-    border-width: 2px;
+    border: 2px solid rgba(137,108,45,0.75);
+    background: rgba(255,250,235,0.96);
     box-shadow: 0 10px 28px rgba(0,0,0,0.38);
-    background: rgba(255, 250, 235, 0.96);
+    overflow: hidden;
   }
 
-  .mini-bracket-button .player {
-    left: 18px;
-    width: 150px;
-    height: 20px;
-    gap: 6px;
-    padding: 2px 24px 2px 0;
-    border-radius: 4px;
-    border-width: 1px;
-  }
-
-  .mini-bracket-button .num { flex-basis: 22px; font-size: 9px; border-radius: 3px 0 0 3px; }
-  .mini-bracket-button .name { font-size: 10px; }
-  .mini-bracket-button .avatar { right: 3px; width: 17px; height: 17px; border-width: 1px; }
-  .mini-bracket-button .piece { right: 9px; font-size: 10px; }
-
-  .mini-bracket-button .p1 { top: 18px; }
-  .mini-bracket-button .p2 { top: 54px; }
-  .mini-bracket-button .p3 { top: 89px; }
-  .mini-bracket-button .p4 { top: 124px; }
-  .mini-bracket-button .p5 { top: 159px; }
-  .mini-bracket-button .p6 { top: 195px; }
-  .mini-bracket-button .p7 { top: 230px; }
-  .mini-bracket-button .p8 { top: 265px; }
-
-  .mini-bracket-button svg {
-    transform: scale(0.35);
-    transform-origin: top left;
+  .mini-content {
+    position: absolute;
+    left: 0;
+    top: 0;
     width: 1580px;
     height: 850px;
+    transform: scale(0.35);
+    transform-origin: top left;
   }
 
-  .mini-bracket-button .line { stroke-width: 5; }
-  .mini-bracket-button .trophy { right: 24px; top: 98px; font-size: 28px; }
-
   .zoom-view {
-    min-height: 100vh;
-    padding: 28px 24px;
     display: none;
-    align-items: center;
-    justify-content: center;
+    position: fixed;
+    inset: 0;
+    z-index: 25;
+    padding: 28px 24px;
+    overflow: auto;
     background:
-      linear-gradient(rgba(245,236,210,0.30), rgba(245,236,210,0.30)),
+      linear-gradient(rgba(245,236,210,0.88), rgba(245,236,210,0.88)),
       url("fruskogorac-bg.png") center / cover no-repeat fixed;
   }
 
   body.zoomed .hero { display: none; }
-  body.zoomed .zoom-view { display: flex; }
+  body.zoomed .zoom-view { display: flex; align-items: center; justify-content: center; }
 
-  .zoom-wrap { width: min(96vw, 1680px); position: relative; }
+  .zoom-wrap { width: min(96vw, 1680px); min-width: 900px; }
 
   .close-btn {
     position: fixed;
     top: 18px;
     right: 22px;
-    z-index: 10;
+    z-index: 60;
     border: 2px solid #9b823d;
-    background: rgba(255,250,235,0.94);
+    background: rgba(255,250,235,0.96);
     color: #0b321c;
     border-radius: 999px;
     padding: 10px 18px;
@@ -168,10 +147,11 @@
 
   .bracket-card {
     position: relative;
+    width: 100%;
     height: 850px;
     border-radius: 28px;
-    background: rgba(255, 250, 235, 0.97);
-    border: 3px solid rgba(137, 108, 45, 0.75);
+    background: rgba(255,250,235,0.985);
+    border: 3px solid rgba(137,108,45,0.75);
     box-shadow: 0 22px 55px rgba(0,0,0,0.35);
     overflow: hidden;
   }
@@ -185,21 +165,79 @@
     z-index: 0;
   }
 
-  .player {
+  .player, .winner-slot, .champion-slot {
     position: absolute;
-    left: 70px;
-    width: 450px;
-    height: 86px;
     display: flex;
     align-items: center;
     gap: 20px;
-    padding: 8px 120px 8px 0;
     border: 2px solid #9b823d;
     border-radius: 12px;
-    background: rgba(255, 253, 244, 0.98);
+    background: rgba(255,253,244,0.98);
     box-shadow: 0 4px 12px rgba(0,0,0,0.13);
     z-index: 3;
   }
+
+  .player {
+    left: 70px;
+    width: 450px;
+    height: 86px;
+    padding: 8px 120px 8px 0;
+  }
+
+  .winner-slot {
+    width: 250px;
+    height: 62px;
+    padding: 6px 70px 6px 14px;
+    opacity: 0;
+    transform: scale(0.96);
+    transition: opacity .3s ease, transform .3s ease;
+  }
+
+  .winner-slot.filled {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .winner-slot .slot-name {
+    font-size: 22px;
+    font-weight: bold;
+    white-space: nowrap;
+  }
+
+  .winner-slot .slot-avatar {
+    position: absolute;
+    right: 8px;
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #caa24a;
+    background: white;
+  }
+
+  .wq1 { left: 610px; top: 99px; }
+  .wq2 { left: 610px; top: 299px; }
+  .wq3 { left: 610px; top: 499px; }
+  .wq4 { left: 610px; top: 699px; }
+
+  .ws1 { left: 1010px; top: 199px; }
+  .ws2 { left: 1010px; top: 599px; }
+
+  .champion-slot {
+    right: 84px;
+    top: 500px;
+    width: 300px;
+    height: 92px;
+    padding: 8px 95px 8px 16px;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity .3s ease, transform .3s ease;
+  }
+
+  .champion-slot.filled { opacity: 1; transform: scale(1); }
+  .champion-slot .crown { position: absolute; top: -38px; left: 50%; transform: translateX(-50%); font-size: 42px; }
+  .champion-slot .slot-name { font-size: 30px; font-weight: bold; }
+  .champion-slot .slot-avatar { position: absolute; right: 10px; width: 74px; height: 74px; border-radius: 50%; object-fit: cover; border: 4px solid #caa24a; }
 
   .num {
     flex: 0 0 72px;
@@ -234,27 +272,111 @@
   .p5 { top: 435px; } .p6 { top: 535px; } .p7 { top: 635px; } .p8 { top: 735px; }
 
   svg { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
-  .line { fill: none; stroke: #0b321c; stroke-width: 5; }
+  .line { fill: none; stroke: #0b321c; stroke-width: 5; stroke-linecap: square; stroke-linejoin: miter; }
   .trophy { position: absolute; right: 140px; top: 330px; font-size: 120px; z-index: 3; }
+
+  .tour-controls {
+    position: absolute;
+    right: 82px;
+    bottom: 44px;
+    z-index: 5;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .tour-btn {
+    border: 2px solid #9b823d;
+    background: #06441f;
+    color: white;
+    border-radius: 999px;
+    padding: 12px 20px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  }
+
+  .tour-btn.gold { background: #b78a19; color: #fff; }
+  .tour-btn.end { background: #8a3b24; }
+
+  .match-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    background: rgba(0,0,0,0.45);
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .match-modal.show { display: flex; }
+
+  .match-box {
+    width: min(620px, 94vw);
+    background: rgba(255,250,235,0.98);
+    border: 3px solid #9b823d;
+    border-radius: 24px;
+    box-shadow: 0 18px 55px rgba(0,0,0,0.45);
+    padding: 24px;
+    text-align: center;
+  }
+
+  .match-box h2 { margin: 0 0 10px; font-size: 32px; }
+  .match-box p { margin: 0 0 20px; font-family: Arial, sans-serif; }
+
+  .choice-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .choice-btn {
+    border: 2px solid #9b823d;
+    background: white;
+    border-radius: 18px;
+    padding: 14px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 22px;
+    color: #0b321c;
+  }
+
+  .choice-btn img {
+    display: block;
+    width: 110px;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid #caa24a;
+    margin: 0 auto 10px;
+  }
+
+  .choice-btn .piece-big { display: block; font-size: 74px; margin-bottom: 10px; }
+
+  .confetti {
+    position: fixed;
+    top: -20px;
+    width: 10px;
+    height: 16px;
+    z-index: 100;
+    animation: fall linear forwards;
+  }
+
+  @keyframes fall {
+    to { transform: translateY(110vh) rotate(720deg); opacity: 0.9; }
+  }
 
   @media (max-width: 900px) {
     body { background-position: center top; background-size: auto 100vh; }
-    .hero { min-height: 100vh; padding: 0 12px; }
-    .settings-btn { bottom: 10px; right: 10px; padding: 8px 12px; font-size: 13px; }
-    .settings-panel { top: auto; bottom: 60px; right: 10px; }
-    .mini-bracket-button { width: 88vw; right: 6vw; top: auto; bottom: 7vh; }
-    .mini-bracket-button .bracket-card { height: 235px; border-radius: 12px; }
-    .mini-bracket-button .player { left: 12px; width: 135px; height: 19px; gap: 4px; padding-right: 24px; }
-    .mini-bracket-button .num { flex-basis: 20px; font-size: 9px; }
-    .mini-bracket-button .name { font-size: 10px; }
-    .mini-bracket-button .avatar { width: 16px; height: 16px; right: 3px; border-width: 1px; }
-    .mini-bracket-button .piece { font-size: 10px; right: 8px; }
-    .mini-bracket-button .p1 { top: 12px; } .mini-bracket-button .p2 { top: 40px; }
-    .mini-bracket-button .p3 { top: 68px; } .mini-bracket-button .p4 { top: 96px; }
-    .mini-bracket-button .p5 { top: 124px; } .mini-bracket-button .p6 { top: 152px; }
-    .mini-bracket-button .p7 { top: 180px; } .mini-bracket-button .p8 { top: 208px; }
-    .mini-bracket-button .trophy { right: 18px; top: 92px; font-size: 25px; }
-    .zoom-view { min-height: 100vh; padding: 12px; align-items: flex-start; overflow-x: auto; justify-content: flex-start; }
+    .settings-btn { right: 10px; bottom: 10px; padding: 8px 12px; font-size: 13px; }
+    .settings-panel { right: 10px; bottom: 56px; }
+    .mini-bracket-button { width: 92vw; right: 4vw; top: auto; bottom: 6vh; }
+    .mini-frame { height: 215px; }
+    .mini-content { transform: scale(0.255); }
+    .zoom-view { padding: 12px; }
+    body.zoomed .zoom-view { align-items: flex-start; justify-content: flex-start; }
     .zoom-wrap { width: 980px; min-width: 980px; }
     .zoom-view .bracket-card { height: 760px; border-radius: 20px; }
     .zoom-view .player { left: 24px; width: 330px; height: 68px; padding-right: 82px; gap: 12px; }
@@ -266,37 +388,17 @@
     .zoom-view .p5 { top: 380px; } .zoom-view .p6 { top: 468px; } .zoom-view .p7 { top: 556px; } .zoom-view .p8 { top: 644px; }
     .zoom-view .trophy { right: 55px; top: 330px; font-size: 78px; }
     .close-btn { top: 10px; right: 10px; padding: 8px 14px; font-size: 14px; }
-  }
-    .settings-panel { top: 52px; right: 10px; }
-    .mini-bracket-button { width: 88vw; right: 6vw; top: auto; bottom: 7vh; }
-    .mini-bracket-button .bracket-card { height: 235px; border-radius: 12px; }
-    .mini-bracket-button .player { left: 12px; width: 135px; height: 19px; gap: 4px; padding-right: 24px; }
-    .mini-bracket-button .num { flex-basis: 20px; font-size: 9px; }
-    .mini-bracket-button .name { font-size: 10px; }
-    .mini-bracket-button .avatar { width: 16px; height: 16px; right: 3px; border-width: 1px; }
-    .mini-bracket-button .piece { font-size: 10px; right: 8px; }
-    .mini-bracket-button .p1 { top: 12px; } .mini-bracket-button .p2 { top: 40px; }
-    .mini-bracket-button .p3 { top: 68px; } .mini-bracket-button .p4 { top: 96px; }
-    .mini-bracket-button .p5 { top: 124px; } .mini-bracket-button .p6 { top: 152px; }
-    .mini-bracket-button .p7 { top: 180px; } .mini-bracket-button .p8 { top: 208px; }
-    .mini-bracket-button .trophy { right: 18px; top: 92px; font-size: 25px; }
-    .zoom-view { min-height: 100vh; padding: 12px; align-items: flex-start; overflow-x: auto; justify-content: flex-start; }
-    .zoom-wrap { width: 980px; min-width: 980px; }
-    .zoom-view .bracket-card { height: 760px; border-radius: 20px; }
-    .zoom-view .player { left: 24px; width: 330px; height: 68px; padding-right: 82px; gap: 12px; }
-    .zoom-view .num { flex-basis: 52px; font-size: 24px; }
-    .zoom-view .name { font-size: 26px; }
-    .zoom-view .avatar { width: 58px; height: 58px; right: 8px; border-width: 3px; }
-    .zoom-view .piece { font-size: 28px; right: 22px; }
-    .zoom-view .p1 { top: 28px; } .zoom-view .p2 { top: 116px; } .zoom-view .p3 { top: 204px; } .zoom-view .p4 { top: 292px; }
-    .zoom-view .p5 { top: 380px; } .zoom-view .p6 { top: 468px; } .zoom-view .p7 { top: 556px; } .zoom-view .p8 { top: 644px; }
-    .zoom-view .trophy { right: 55px; top: 330px; font-size: 78px; }
-    .close-btn { top: 10px; right: 10px; padding: 8px 14px; font-size: 14px; }
-  }
-
-  @media (max-width: 480px) {
-    .mini-bracket-button { width: 92vw; right: 4vw; bottom: 6vh; }
-    .mini-bracket-button .bracket-card { height: 215px; }
+    .zoom-view .winner-slot { width: 190px; height: 52px; padding-right: 58px; }
+    .zoom-view .winner-slot .slot-name { font-size: 18px; }
+    .zoom-view .winner-slot .slot-avatar { width: 42px; height: 42px; }
+    .zoom-view .wq1 { left: 392px; top: 102px; } .zoom-view .wq2 { left: 392px; top: 278px; }
+    .zoom-view .wq3 { left: 392px; top: 454px; } .zoom-view .wq4 { left: 392px; top: 630px; }
+    .zoom-view .ws1 { left: 650px; top: 190px; } .zoom-view .ws2 { left: 650px; top: 542px; }
+    .zoom-view .champion-slot { right: 34px; top: 470px; width: 220px; height: 76px; padding-right: 76px; }
+    .zoom-view .champion-slot .slot-name { font-size: 23px; }
+    .zoom-view .champion-slot .slot-avatar { width: 58px; height: 58px; }
+    .tour-controls { right: 34px; bottom: 30px; }
+    .tour-btn { padding: 9px 14px; font-size: 14px; }
   }
 </style>
 </head>
@@ -312,16 +414,29 @@
 
 <section class="hero">
   <button class="mini-bracket-button" onclick="openBracket()" aria-label="Otvori žreb">
-    <div class="bracket-card bracket mini"></div>
+    <div class="mini-frame">
+      <div class="mini-content bracket"></div>
+    </div>
   </button>
 </section>
 
 <section class="zoom-view">
   <button class="close-btn" onclick="closeBracket()">Nazad</button>
   <div class="zoom-wrap">
-    <div class="bracket-card bracket zoom"></div>
+    <div class="bracket-card bracket"></div>
   </div>
 </section>
+
+<div class="match-modal" id="matchModal">
+  <div class="match-box">
+    <h2 id="matchTitle">Ko je pobedio?</h2>
+    <p id="matchSubtitle"></p>
+    <div class="choice-row">
+      <button class="choice-btn" id="choiceA"></button>
+      <button class="choice-btn" id="choiceB"></button>
+    </div>
+  </div>
+</div>
 
 <script>
   const defaultPlayers = [
@@ -336,22 +451,40 @@
   ];
 
   let currentPlayers = loadPlayers();
+  let tournament = loadTournament();
+  let activeRound = null;
+  let activeMatchIndex = 0;
 
-  function buildBracket(container, players) {
-    container.innerHTML = '';
+  function emptyTournament() {
+    return { qf: [null, null, null, null], sf: [null, null], champion: null, status: 'ready' };
+  }
 
-    players.forEach((player, index) => {
-      const div = document.createElement('div');
-      div.className = `player p${index + 1}`;
-      div.innerHTML = `
+  function buildPlayerHtml(player, index) {
+    return `
+      <div class="player p${index + 1}">
         <span class="num">${index + 1}</span>
         <span class="name">${player.name}</span>
         ${player.img ? `<img class="avatar" src="${player.img}" alt="${player.name}">` : '<span class="piece">♟</span>'}
-      `;
-      container.appendChild(div);
-    });
+      </div>
+    `;
+  }
 
-    container.insertAdjacentHTML('beforeend', `
+  function slotHtml(cls, player) {
+    const filled = player ? 'filled' : '';
+    const img = player && player.img ? `<img class="slot-avatar" src="${player.img}" alt="${player.name}">` : '';
+    const piece = player && !player.img ? '<span class="piece">♟</span>' : '';
+    return `<div class="winner-slot ${cls} ${filled}">${player ? `<span class="slot-name">${player.name}</span>${img}${piece}` : ''}</div>`;
+  }
+
+  function championHtml(player) {
+    const filled = player ? 'filled' : '';
+    const img = player && player.img ? `<img class="slot-avatar" src="${player.img}" alt="${player.name}">` : '';
+    const piece = player && !player.img ? '<span class="piece">♟</span>' : '';
+    return `<div class="champion-slot ${filled}">${player ? `<span class="crown">👑</span><span class="slot-name">${player.name}</span>${img}${piece}` : ''}</div>`;
+  }
+
+  function buildBracket(container, players) {
+    container.innerHTML = players.map(buildPlayerHtml).join('') + `
       <svg viewBox="0 0 1580 850" preserveAspectRatio="none">
         <path class="line" d="M520 80 H660 V180 H520" /><path class="line" d="M660 130 H820" />
         <path class="line" d="M520 280 H660 V380 H520" /><path class="line" d="M660 330 H820" />
@@ -362,11 +495,100 @@
         <path class="line" d="M1130 230 H1280 V630 H1130" /><path class="line" d="M1280 430 H1430" />
       </svg>
       <div class="trophy">🏆</div>
-    `);
+      ${slotHtml('wq1', tournament.qf[0])}
+      ${slotHtml('wq2', tournament.qf[1])}
+      ${slotHtml('wq3', tournament.qf[2])}
+      ${slotHtml('wq4', tournament.qf[3])}
+      ${slotHtml('ws1', tournament.sf[0])}
+      ${slotHtml('ws2', tournament.sf[1])}
+      ${championHtml(tournament.champion)}
+      <div class="tour-controls">${tourButtonHtml()}</div>
+    `;
+  }
+
+  function tourButtonHtml() {
+    if (tournament.champion) return '<button class="tour-btn end" onclick="finishTournament(event)">Kraj</button>';
+    if (!tournament.qf.every(Boolean)) return '<button class="tour-btn" onclick="startRound(event, \'qf\')">Prvo kolo</button>';
+    if (!tournament.sf.every(Boolean)) return '<button class="tour-btn gold" onclick="startRound(event, \'sf\')">Polufinale</button>';
+    return '<button class="tour-btn gold" onclick="startRound(event, \'final\')">Finale</button>';
   }
 
   function renderAll() {
     document.querySelectorAll('.bracket').forEach(container => buildBracket(container, currentPlayers));
+  }
+
+  function getMatches(round) {
+    if (round === 'qf') return [[currentPlayers[0], currentPlayers[1]], [currentPlayers[2], currentPlayers[3]], [currentPlayers[4], currentPlayers[5]], [currentPlayers[6], currentPlayers[7]]];
+    if (round === 'sf') return [[tournament.qf[0], tournament.qf[1]], [tournament.qf[2], tournament.qf[3]]];
+    return [[tournament.sf[0], tournament.sf[1]]];
+  }
+
+  function startRound(event, round) {
+    event.stopPropagation();
+    activeRound = round;
+    activeMatchIndex = 0;
+    showNextMatch();
+  }
+
+  function showNextMatch() {
+    const matches = getMatches(activeRound);
+    if (activeMatchIndex >= matches.length) {
+      closeModal();
+      saveTournament();
+      renderAll();
+      if (activeRound === 'final') celebrate();
+      return;
+    }
+
+    const [a, b] = matches[activeMatchIndex];
+    if (!a || !b) { activeMatchIndex++; showNextMatch(); return; }
+
+    const title = activeRound === 'qf' ? 'Prvo kolo' : activeRound === 'sf' ? 'Polufinale' : 'Finale';
+    document.getElementById('matchTitle').textContent = title;
+    document.getElementById('matchSubtitle').textContent = `Ko je pobedio: ${a.name} ili ${b.name}?`;
+    setChoice('choiceA', a);
+    setChoice('choiceB', b);
+    document.getElementById('matchModal').classList.add('show');
+  }
+
+  function setChoice(id, player) {
+    const btn = document.getElementById(id);
+    btn.innerHTML = `${player.img ? `<img src="${player.img}" alt="${player.name}">` : '<span class="piece-big">♟</span>'}<span>${player.name}</span>`;
+    btn.onclick = () => chooseWinner(player);
+  }
+
+  function chooseWinner(player) {
+    if (activeRound === 'qf') tournament.qf[activeMatchIndex] = player;
+    if (activeRound === 'sf') tournament.sf[activeMatchIndex] = player;
+    if (activeRound === 'final') tournament.champion = player;
+    activeMatchIndex++;
+    saveTournament();
+    renderAll();
+    showNextMatch();
+  }
+
+  function closeModal() { document.getElementById('matchModal').classList.remove('show'); }
+
+  function finishTournament(event) {
+    event.stopPropagation();
+    tournament = emptyTournament();
+    localStorage.removeItem('fruskogoracTournament');
+    renderAll();
+    closeBracket();
+  }
+
+  function celebrate() {
+    const colors = ['#0b8f2d', '#ffd34d', '#b78a19', '#ffffff', '#d33'];
+    for (let i = 0; i < 120; i++) {
+      const c = document.createElement('div');
+      c.className = 'confetti';
+      c.style.left = Math.random() * 100 + 'vw';
+      c.style.background = colors[Math.floor(Math.random() * colors.length)];
+      c.style.animationDuration = (2 + Math.random() * 2.5) + 's';
+      c.style.animationDelay = (Math.random() * 0.8) + 's';
+      document.body.appendChild(c);
+      setTimeout(() => c.remove(), 5000);
+    }
   }
 
   function shuffle(array) {
@@ -380,15 +602,20 @@
 
   function generateRandomDraw() {
     currentPlayers = shuffle(defaultPlayers);
+    tournament = emptyTournament();
     localStorage.setItem('fruskogoracPlayers', JSON.stringify(currentPlayers));
+    localStorage.removeItem('fruskogoracTournament');
     renderAll();
     document.getElementById('settingsPanel').classList.remove('show');
   }
 
   function resetDraw() {
     currentPlayers = [...defaultPlayers];
+    tournament = emptyTournament();
     localStorage.removeItem('fruskogoracPlayers');
+    localStorage.removeItem('fruskogoracTournament');
     renderAll();
+    document.getElementById('settingsPanel').classList.remove('show');
   }
 
   function loadPlayers() {
@@ -399,12 +626,23 @@
     return [...defaultPlayers];
   }
 
-  function toggleSettings() {
-    document.getElementById('settingsPanel').classList.toggle('show');
+  function loadTournament() {
+    try {
+      const saved = JSON.parse(localStorage.getItem('fruskogoracTournament'));
+      if (saved && Array.isArray(saved.qf) && Array.isArray(saved.sf)) return saved;
+    } catch (e) {}
+    return emptyTournament();
   }
+
+  function saveTournament() {
+    localStorage.setItem('fruskogoracTournament', JSON.stringify(tournament));
+  }
+
+  function toggleSettings() { document.getElementById('settingsPanel').classList.toggle('show'); }
 
   function openBracket() {
     document.body.classList.add('zoomed');
+    document.getElementById('settingsPanel').classList.remove('show');
     window.scrollTo(0, 0);
   }
 
@@ -415,18 +653,5 @@
 
   renderAll();
 </script>
-
-<!--
-Potrebni fajlovi u istom folderu:
-index.html
-fruskogorac-bg.png
-mosa.jpg
-david.jpg
-igor.jpg
-ceda.jpg
-steva.jpg
-mladja.jpg
-jagosh.jpg
--->
 </body>
 </html>
