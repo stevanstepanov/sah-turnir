@@ -47,8 +47,8 @@
     position: fixed;
     z-index: 70;
     bottom: 64px;
-    width: min(520px, calc(100vw - 32px));
-    max-height: 70vh;
+    width: min(560px, calc(100vw - 32px));
+    max-height: 74vh;
     overflow: auto;
     padding: 16px;
     border: 2px solid #9b823d;
@@ -69,6 +69,49 @@
   .panel ol { margin: 0 0 10px 22px; padding: 0; }
   .panel li { margin: 7px 0; }
 
+  .player-select-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin: 12px 0;
+  }
+
+  .player-check {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    border: 1px solid #c9b681;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.55);
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  .player-check input { transform: scale(1.15); }
+
+  .small-avatar {
+    width: 28px;
+    height: 28px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #caa24a;
+    background: white;
+  }
+
+  .select-status {
+    margin-top: 8px;
+    font-weight: bold;
+    color: #06441f;
+  }
+
+  .error-text {
+    color: #a42020;
+    font-weight: bold;
+    margin-top: 8px;
+    min-height: 18px;
+  }
+
   .history-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
   .history-table th, .history-table td { border-bottom: 1px solid #c9b681; padding: 8px; text-align: left; }
   .history-table th { background: rgba(6,68,31,0.12); }
@@ -87,31 +130,32 @@
 
   .secondary-btn { background: #8a6a24; }
 
-  .mini-bracket-button {
-    position: absolute;
-    z-index: 2;
-    right: 7vw;
-    top: 44vh;
-    width: min(520px, 34vw);
-    border: 0;
-    padding: 0;
-    background: transparent;
-    cursor: pointer;
-    transition: transform 0.18s ease, filter 0.18s ease;
-  }
+.mini-bracket-button {
+  position: absolute;
+  z-index: 2;
+  left: 7vw;
+  right: auto;
+  top: 44vh;
+  width: min(520px, 34vw);
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  transition: transform 0.18s ease, filter 0.18s ease;
+}
 
   .mini-bracket-button:hover { transform: scale(1.035); filter: brightness(1.03); }
 
-  .mini-frame {
-    position: relative;
-    width: 100%;
-    height: 300px;
-    border-radius: 12px;
-    border: 2px solid rgba(137,108,45,0.75);
-    background: rgba(255,250,235,0.96);
-    box-shadow: 0 10px 28px rgba(0,0,0,0.38);
-    overflow: hidden;
-  }
+.mini-frame {
+  position: relative;
+  width: 100%;
+  height: 280px;
+  border-radius: 12px;
+  border: 2px solid rgba(137,108,45,0.75);
+  background: rgba(255,250,235,0.96);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.38);
+  overflow: hidden;
+}
 
   .mini-content {
     position: absolute;
@@ -119,9 +163,10 @@
     top: 0;
     width: 1580px;
     height: 850px;
-    transform: scale(0.35);
+    transform: scale(0.329);
     transform-origin: top left;
   }
+
 
   .zoom-view {
     display: none;
@@ -175,6 +220,187 @@
     background: repeating-conic-gradient(#f5ecd2 0% 25%, #d6e2c7 0% 50%) 0 0 / 78px 78px;
     z-index: 0;
   }
+  
+    .dynamic-bracket {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    gap: 26px;
+    padding: 34px 48px 96px;
+  }
+
+  .dynamic-bracket.size-4 { grid-template-columns: 1.1fr 1fr 1fr; }
+  .dynamic-bracket.size-8 { grid-template-columns: 1.1fr 1fr 1fr 1fr; }
+  .dynamic-bracket.size-16 { grid-template-columns: 1.15fr 1fr 1fr 1fr 1fr; gap: 18px; }
+
+  .bracket-column {
+    min-width: 0;
+    display: grid;
+    grid-template-rows: 42px 1fr;
+  }
+
+  .round-title {
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    text-align: center;
+    color: #06441f;
+    font-size: 18px;
+  }
+
+  .round-slots {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    gap: 10px;
+  }
+
+  .dynamic-player {
+    position: relative;
+    min-height: 62px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border: 2px solid #9b823d;
+    border-radius: 12px;
+    background: rgba(255,253,244,0.98);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.13);
+    padding: 8px 58px 8px 0;
+    overflow: visible;
+  }
+  
+
+
+
+  .dynamic-bracket.size-16 {
+    grid-template-columns: 1.15fr 1fr 1fr 1fr 1fr;
+    gap: 14px;
+    padding: 22px 34px 76px;
+  }
+  
+	.connector-svg {
+	  position: absolute;
+	  inset: 0;
+	  width: 100%;
+	  height: 100%;
+	  z-index: 2;
+	  pointer-events: none;
+	}
+
+	.connector-line {
+	  fill: none;
+	  stroke: #0b321c;
+	  stroke-width: 4;
+	  stroke-linecap: square;
+	  stroke-linejoin: miter;
+	}
+
+	.dynamic-player {
+	  z-index: 3;
+	}
+
+
+  .size-16 .bracket-column {
+    grid-template-rows: 28px 1fr;
+  }
+
+  .size-16 .round-title {
+    font-size: 14px;
+  }
+
+  .size-16 .round-slots {
+    gap: 4px;
+  }
+
+  .size-16 .dynamic-player {
+    min-height: 34px;
+    gap: 6px;
+    padding: 4px 36px 4px 0;
+  }
+
+
+  .dynamic-player.empty {
+    opacity: 0.28;
+  }
+
+  .dynamic-num {
+    flex: 0 0 46px;
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #06441f;
+    color: white;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    font-size: 22px;
+    border-radius: 9px 0 0 9px;
+  }
+
+  .size-16 .dynamic-num {
+    flex-basis: 28px;
+    font-size: 14px;
+  }
+
+
+  .dynamic-name {
+    min-width: 0;
+    font-weight: bold;
+    font-size: 24px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .size-16 .dynamic-name {
+    font-size: 15px;
+  }
+
+
+  .dynamic-avatar {
+    position: absolute;
+    right: 8px;
+    width: 46px;
+    height: 46px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #caa24a;
+    background: white;
+  }
+
+  .size-16 .dynamic-avatar {
+    width: 28px;
+    height: 28px;
+    border-width: 2px;
+  }
+
+  .dynamic-piece {
+    position: absolute;
+    right: 18px;
+    font-size: 30px;
+  }
+
+  .size-16 .dynamic-piece {
+    right: 11px;
+    font-size: 18px;
+  }
+
+  .slot-crown {
+    position: absolute;
+    top: -32px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 34px;
+  }
+
+  .dynamic-trophy {
+    right: 36px;
+    top: auto;
+    bottom: 18px;
+    font-size: 72px;
+  }
+
 
   .player, .winner-slot, .champion-slot {
     position: absolute;
@@ -307,6 +533,51 @@
 
   .confetti { position: fixed; top: -20px; width: 10px; height: 16px; z-index: 140; animation: fall linear forwards; }
   @keyframes fall { to { transform: translateY(110vh) rotate(720deg); opacity: 0.9; } }
+  
+@media (max-width: 1400px), (max-height: 820px) {
+  body.zoomed .zoom-view {
+    align-items: flex-start;
+    justify-content: center;
+    padding: 18px 16px;
+  }
+
+  .zoom-wrap {
+    zoom: 0.82;
+  }
+}
+
+	@media (max-width: 1400px) {
+	  .mini-bracket-button {
+		left: 4vw;
+		top: 38vh;
+		width: 450px;
+	  }
+
+	  .mini-frame {
+		height: 242px;
+	  }
+
+	  .mini-content {
+		transform: scale(0.285);
+	  }
+	}
+
+	@media (max-width: 1180px) {
+	  .mini-bracket-button {
+		left: 3vw;
+		top: 36vh;
+		width: 390px;
+	  }
+
+	  .mini-frame {
+		height: 210px;
+	  }
+
+	  .mini-content {
+		transform: scale(0.247);
+	  }
+	}
+
 
   @media (max-width: 900px) {
     body { background-position: center top; background-size: auto 100vh; }
@@ -314,7 +585,8 @@
     .history-btn { left: 10px; bottom: 10px; padding: 8px 12px; font-size: 13px; }
     .settings-panel { right: 10px; bottom: 56px; }
     .history-panel { left: 10px; bottom: 56px; width: calc(100vw - 20px); }
-    .mini-bracket-button { width: 92vw; right: 4vw; top: auto; bottom: 6vh; }
+    .player-select-list { grid-template-columns: 1fr; }
+    .mini-bracket-button { width: 92vw; left: 4vw; right: auto; top: auto; bottom: 6vh; }
     .mini-frame { height: 215px; }
     .mini-content { transform: scale(0.255); }
     .zoom-view { padding: 12px; }
@@ -346,6 +618,10 @@
 </head>
 <body>
 
+<audio id="clickSound" src="click.mp3" preload="auto"></audio>
+<audio id="startSound" src="start.mp3" preload="auto"></audio>
+<audio id="winnerSound" src="winner.mp3" preload="auto"></audio>
+
 <button class="floating-btn history-btn" onclick="toggleHistory()">📜 Istorija</button>
 <div class="panel history-panel" id="historyPanel">
   <h3>Istorija turnira</h3>
@@ -355,17 +631,16 @@
   <button class="action-btn secondary-btn" onclick="clearHistory()">Obriši istoriju</button>
 </div>
 
-<button class="floating-btn settings-btn" onclick="toggleSettings()">⚙ Podešavanja</button>
+<button class="floating-btn settings-btn" onclick="toggleSettings()">⚙ Napravi turnir</button>
 <div class="panel settings-panel" id="settingsPanel">
   <h3>Napravi turnir</h3>
-  <p>Random izmešaj trenutnih 8 igrača i napravi novo prvo kolo.</p>
-  <button class="action-btn" onclick="generateRandomDraw()">🎲 Generiši žreb</button>
-  <button class="action-btn secondary-btn" onclick="resetDraw()">Vrati početni redosled</button>
-</div>
+  <p>Izaberi 4, 8 ili 16 takmičara. Nakon toga klikni <strong>Start tour</strong> i program će random napraviti žreb.</p>
+  <div id="playerSelectList" class="player-select-list"></div>
+  <div id="selectStatus" class="select-status"></div>
+  <div id="selectError" class="error-text"></div>
+  <button class="action-btn" onclick="createTournamentFromSelection()">🎲 Start tour</button>
 
-<audio id="clickSound" src="click.mp3" preload="auto"></audio>
-<audio id="startSound" src="start.mp3" preload="auto"></audio>
-<audio id="winnerSound" src="winner.mp3" preload="auto"></audio>
+</div>
 
 <section class="hero">
   <button class="mini-bracket-button" onclick="openBracket()" aria-label="Otvori žreb">
@@ -397,20 +672,15 @@
   function playSound(id) {
     const sound = document.getElementById(id);
     if (!sound) return;
-
     sound.currentTime = 0;
-    sound.play().catch(() => {
-      // Telefon/browser može blokirati zvuk dok korisnik ne klikne prvi put.
-    });
+    sound.play().catch(() => {});
   }
 
   document.addEventListener('click', function(event) {
-    if (event.target.closest('button')) {
-      playSound('clickSound');
-    }
+    if (event.target.closest('button')) playSound('clickSound');
   });
 
-  const defaultPlayers = [
+  const playerDatabase = [
     { name: 'Mosa', img: 'mosa.jpg' },
     { name: 'David', img: 'david.jpg' },
     { name: 'Igor', img: 'igor.jpg' },
@@ -418,123 +688,305 @@
     { name: 'Ceda', img: 'ceda.jpg' },
     { name: 'Steva', img: 'steva.jpg' },
     { name: 'Mladja', img: 'mladja.jpg' },
-    { name: 'Jagosh', img: 'jagosh.jpg' }
+    { name: 'Jagosh', img: 'jagosh.jpg' },
+    { name: 'Jovan', img: 'jovan.jpg' },
+    { name: 'Benki', img: null },
+    { name: 'Milan', img: null },
+    { name: 'CedaL', img: null },
+    { name: 'NedjaD', img: null },
+    { name: 'Zdravko', img: null },
+	{ name: 'Mrki', img: null },
+    { name: 'Dulence', img: null }
+	
   ];
+
 
   let currentPlayers = loadPlayers();
   let tournament = loadTournament();
   let activeRound = null;
   let activeMatchIndex = 0;
 
-  function emptyTournament() {
-    return { qf: [null, null, null, null], sf: [null, null], champion: null, savedToHistory: false };
+  function emptyTournament(size = currentPlayers.length) {
+    const rounds = [];
+    let matches = size / 2;
+    while (matches >= 1) {
+      rounds.push(Array(matches).fill(null));
+      matches = matches / 2;
+    }
+    return {
+      size,
+      rounds,
+      champion: null,
+      savedToHistory: false
+    };
   }
 
-  function buildPlayerHtml(player, index) {
-    return `
-      <div class="player p${index + 1}">
-        <span class="num">${index + 1}</span>
-        <span class="name">${player.name}</span>
-        ${player.img ? `<img class="avatar" src="${player.img}" alt="${player.name}">` : '<span class="piece">♟</span>'}
-      </div>`;
+  function getRoundNames(size) {
+    if (size === 4) return ['Polufinale', 'Finale'];
+    if (size === 8) return ['Četvrtfinale', 'Polufinale', 'Finale'];
+    return ['Osmina finala', 'Četvrtfinale', 'Polufinale', 'Finale'];
   }
-
-  function slotHtml(cls, player) {
-    const filled = player ? 'filled' : '';
-    const img = player && player.img ? `<img class="slot-avatar" src="${player.img}" alt="${player.name}">` : '';
-    const piece = player && !player.img ? '<span class="piece">♟</span>' : '';
-    return `<div class="winner-slot ${cls} ${filled}">${player ? `<span class="slot-name">${player.name}</span>${img}${piece}` : ''}</div>`;
+  
+  function currentRoundIndex() {
+    if (tournament.champion) return -1;
+    for (let i = 0; i < tournament.rounds.length; i++) {
+      if (!roundComplete(i)) return i;
+    }
+    return tournament.rounds.length - 1;
   }
-
-  function championHtml(player) {
-    const filled = player ? 'filled' : '';
-    const img = player && player.img ? `<img class="slot-avatar" src="${player.img}" alt="${player.name}">` : '';
-    const piece = player && !player.img ? '<span class="piece">♟</span>' : '';
-    return `<div class="champion-slot ${filled}">${player ? `<span class="crown">👑</span><span class="slot-name">${player.name}</span>${img}${piece}` : ''}</div>`;
+  
+  function getRoundPlayers(roundIndex) {
+    if (roundIndex === 0) return currentPlayers;
+    return tournament.rounds[roundIndex - 1];
   }
-
+  
   function buildBracket(container, players) {
-    container.innerHTML = players.map(buildPlayerHtml).join('') + `
-      <svg viewBox="0 0 1580 850" preserveAspectRatio="none">
-        <path class="line" d="M520 80 H660 V180 H520" /><path class="line" d="M660 130 H820" />
-        <path class="line" d="M520 280 H660 V380 H520" /><path class="line" d="M660 330 H820" />
-        <path class="line" d="M520 480 H660 V580 H520" /><path class="line" d="M660 530 H820" />
-        <path class="line" d="M520 680 H660 V780 H520" /><path class="line" d="M660 730 H820" />
-        <path class="line" d="M820 130 H980 V330 H820" /><path class="line" d="M980 230 H1130" />
-        <path class="line" d="M820 530 H980 V730 H820" /><path class="line" d="M980 630 H1130" />
-        <path class="line" d="M1130 230 H1280 V630 H1130" /><path class="line" d="M1280 430 H1430" />
-      </svg>
-      <div class="trophy">🏆</div>
-      ${slotHtml('wq1', tournament.qf[0])}
-      ${slotHtml('wq2', tournament.qf[1])}
-      ${slotHtml('wq3', tournament.qf[2])}
-      ${slotHtml('wq4', tournament.qf[3])}
-      ${slotHtml('ws1', tournament.sf[0])}
-      ${slotHtml('ws2', tournament.sf[1])}
-      ${championHtml(tournament.champion)}
-      <div class="tour-controls">${tourButtonHtml()}</div>`;
-  }
+    const roundNames = getRoundNames(players.length);
+    const columns = [];
 
+    columns.push({
+      title: 'Takmičari',
+      slots: players
+    });
+
+    tournament.rounds.forEach((round, index) => {
+      columns.push({
+        title: roundNames[index],
+        slots: round
+      });
+    });
+
+
+	container.innerHTML = `
+	  <div class="dynamic-bracket size-${players.length}">
+		<svg class="connector-svg" aria-hidden="true"></svg>
+		${columns.map((column, columnIndex) => `
+
+          <div class="bracket-column">
+            <div class="round-title">${column.title}</div>
+            <div class="round-slots slots-${column.slots.length}">
+              ${column.slots.map((player, index) => playerSlotHtml(player, columnIndex, index)).join('')}
+            </div>
+          </div>
+        `).join('')}
+        <div class="trophy dynamic-trophy">🏆</div>
+        <div class="tour-controls">${tourButtonHtml()}</div>
+      </div>
+    `;
+	requestAnimationFrame(() => drawConnectors(container));
+
+  }
+  
+  function drawConnectors(container) {
+  const bracket = container.querySelector('.dynamic-bracket');
+  const svg = container.querySelector('.connector-svg');
+  const columns = Array.from(container.querySelectorAll('.bracket-column'));
+
+  if (!bracket || !svg || columns.length < 2) return;
+
+  svg.innerHTML = '';
+
+  const bracketRect = bracket.getBoundingClientRect();
+  svg.setAttribute('viewBox', `0 0 ${bracketRect.width} ${bracketRect.height}`);
+  svg.setAttribute('preserveAspectRatio', 'none');
+
+  for (let columnIndex = 0; columnIndex < columns.length - 1; columnIndex++) {
+    const fromSlots = Array.from(columns[columnIndex].querySelectorAll('.dynamic-player'));
+    const toSlots = Array.from(columns[columnIndex + 1].querySelectorAll('.dynamic-player'));
+
+    toSlots.forEach((toSlot, targetIndex) => {
+      const first = fromSlots[targetIndex * 2];
+      const second = fromSlots[targetIndex * 2 + 1];
+
+      if (!first || !second || !toSlot) return;
+
+      const firstRect = first.getBoundingClientRect();
+      const secondRect = second.getBoundingClientRect();
+      const toRect = toSlot.getBoundingClientRect();
+
+      const x1 = firstRect.right - bracketRect.left;
+      const y1 = firstRect.top + firstRect.height / 2 - bracketRect.top;
+
+      const x2 = secondRect.right - bracketRect.left;
+      const y2 = secondRect.top + secondRect.height / 2 - bracketRect.top;
+
+      const targetX = toRect.left - bracketRect.left;
+      const targetY = toRect.top + toRect.height / 2 - bracketRect.top;
+
+      const joinX = x1 + Math.max(16, (targetX - x1) * 0.28);
+      const midY = (y1 + y2) / 2;
+      const bridgeX = joinX + Math.max(16, (targetX - joinX) * 0.45);
+
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute(
+        'd',
+        `
+          M ${x1} ${y1} H ${joinX}
+          M ${x2} ${y2} H ${joinX}
+          M ${joinX} ${y1} V ${y2}
+          M ${joinX} ${midY} H ${bridgeX} V ${targetY} H ${targetX}
+        `
+      );
+      path.setAttribute('class', 'connector-line');
+
+      svg.appendChild(path);
+    });
+  }
+}
+
+
+  
+    function playerSlotHtml(player, columnIndex, index) {
+    const isChampion = tournament.champion && player && player.name === tournament.champion.name && columnIndex > 0;
+    const empty = !player ? 'empty' : '';
+    const crown = isChampion ? '<span class="slot-crown">👑</span>' : '';
+    const img = player && player.img ? `<img class="dynamic-avatar" src="${player.img}" alt="${player.name}">` : '';
+    const piece = player && !player.img ? '<span class="dynamic-piece">♟</span>' : '';
+
+    return `
+      <div class="dynamic-player ${empty}">
+        ${crown}
+        ${columnIndex === 0 ? `<span class="dynamic-num">${index + 1}</span>` : ''}
+        <span class="dynamic-name">${player ? player.name : ''}</span>
+        ${img}${piece}
+      </div>
+    `;
+  }
+  
   function tourButtonHtml() {
     if (tournament.champion) return '<button class="tour-btn end" onclick="finishTournament(event)">Kraj</button>';
-    if (!tournament.qf.every(Boolean)) return '<button class="tour-btn" onclick="startRound(event, \'qf\')">Prvo kolo</button>';
-    if (!tournament.sf.every(Boolean)) return '<button class="tour-btn gold" onclick="startRound(event, \'sf\')">Polufinale</button>';
-    return '<button class="tour-btn gold" onclick="startRound(event, \'final\')">Finale</button>';
+
+    const index = currentRoundIndex();
+    const names = getRoundNames(tournament.size);
+    const label = names[index] || 'Start';
+
+    return `<button class="tour-btn ${index > 0 ? 'gold' : ''}" onclick="startRound(event, ${index})">${label}</button>`;
   }
 
-  function renderAll() {
-    document.querySelectorAll('.bracket').forEach(container => buildBracket(container, currentPlayers));
+  function getMatches(roundIndex) {
+    const source = getRoundPlayers(roundIndex);
+    const matches = [];
+
+    for (let i = 0; i < source.length; i += 2) {
+      matches.push([source[i], source[i + 1]]);
+    }
+
+    return matches;
   }
 
-  function getMatches(round) {
-    if (round === 'qf') return [[currentPlayers[0], currentPlayers[1]], [currentPlayers[2], currentPlayers[3]], [currentPlayers[4], currentPlayers[5]], [currentPlayers[6], currentPlayers[7]]];
-    if (round === 'sf') return [[tournament.qf[0], tournament.qf[1]], [tournament.qf[2], tournament.qf[3]]];
-    return [[tournament.sf[0], tournament.sf[1]]];
-  }
-
-  function startRound(event, round) {
+  function startRound(event, roundIndex) {
     event.stopPropagation();
-    if (round === 'qf') playSound('startSound');
-    activeRound = round;
+
+    if (roundIndex > 0 && !roundComplete(roundIndex - 1)) return;
+    if (roundIndex === 0) playSound('startSound');
+
+    activeRound = roundIndex;
     activeMatchIndex = 0;
     showNextMatch();
   }
 
   function showNextMatch() {
     const matches = getMatches(activeRound);
+
     if (activeMatchIndex >= matches.length) {
       closeModal();
       saveTournament();
       renderAll();
-      if (activeRound === 'final') celebrate();
+
+      if (activeRound === tournament.rounds.length - 1) celebrate();
       return;
     }
+
     const [a, b] = matches[activeMatchIndex];
-    if (!a || !b) { activeMatchIndex++; showNextMatch(); return; }
-    document.getElementById('matchTitle').textContent = activeRound === 'qf' ? 'Prvo kolo' : activeRound === 'sf' ? 'Polufinale' : 'Finale';
+
+    if (!a || !b) {
+      activeMatchIndex++;
+      showNextMatch();
+      return;
+    }
+
+    const roundNames = getRoundNames(tournament.size);
+
+    document.getElementById('matchTitle').textContent = roundNames[activeRound];
     document.getElementById('matchSubtitle').textContent = `Ko je pobedio: ${a.name} ili ${b.name}?`;
+
     setChoice('choiceA', a);
     setChoice('choiceB', b);
+
     document.getElementById('matchModal').classList.add('show');
   }
+
+  function chooseWinner(player) {
+    tournament.rounds[activeRound][activeMatchIndex] = player;
+
+    if (activeRound === tournament.rounds.length - 1) {
+      tournament.champion = player;
+      saveTournamentToHistory(player);
+    }
+
+    activeMatchIndex++;
+    saveTournament();
+    renderAll();
+    showNextMatch();
+  }
+
+  function updateSelectStatus() {
+    const count = selectedFromCheckboxes().length;
+    const valid = [4, 8, 16].includes(count);
+
+    document.getElementById('selectStatus').textContent = `Izabrano: ${count}`;
+    document.getElementById('selectError').textContent = valid ? '' : 'Potrebno je izabrati 4, 8 ili 16 takmičara.';
+  }
+
+  function createTournamentFromSelection() {
+    const names = selectedFromCheckboxes();
+
+    if (![4, 8, 16].includes(names.length)) {
+      document.getElementById('selectError').textContent = 'Moraš izabrati 4, 8 ili 16 takmičara.';
+      return;
+    }
+
+    const selectedPlayers = names.map(byName).filter(Boolean);
+
+    currentPlayers = shuffle(selectedPlayers);
+    tournament = emptyTournament(currentPlayers.length);
+
+    localStorage.setItem('fruskogoracPlayers', JSON.stringify(currentPlayers));
+    localStorage.removeItem('fruskogoracTournament');
+
+    renderAll();
+    closePanels();
+  }
+
+  function loadTournament() {
+    try {
+      const saved = JSON.parse(localStorage.getItem('fruskogoracTournament'));
+      if (saved && Array.isArray(saved.rounds) && saved.size) return saved;
+    } catch (e) {}
+
+    return emptyTournament();
+  }
+  
+  function roundComplete(roundIndex) {
+    return tournament.rounds[roundIndex] && tournament.rounds[roundIndex].every(Boolean);
+  }
+  
+  function renderAll() {
+    document.querySelectorAll('.bracket').forEach(container => buildBracket(container, currentPlayers));
+    renderPlayerSelection();
+  }
+
+
+  function byName(name) {
+    return playerDatabase.find(p => p.name === name);
+  }
+
+
 
   function setChoice(id, player) {
     const btn = document.getElementById(id);
     btn.innerHTML = `${player.img ? `<img src="${player.img}" alt="${player.name}">` : '<span class="piece-big">♟</span>'}<span>${player.name}</span>`;
     btn.onclick = () => chooseWinner(player);
-  }
-
-  function chooseWinner(player) {
-    if (activeRound === 'qf') tournament.qf[activeMatchIndex] = player;
-    if (activeRound === 'sf') tournament.sf[activeMatchIndex] = player;
-    if (activeRound === 'final') {
-      tournament.champion = player;
-      saveTournamentToHistory(player);
-    }
-    activeMatchIndex++;
-    saveTournament();
-    renderAll();
-    showNextMatch();
   }
 
   function closeModal() { document.getElementById('matchModal').classList.remove('show'); }
@@ -571,38 +1023,28 @@
     return copy;
   }
 
-  function generateRandomDraw() {
-    currentPlayers = shuffle(defaultPlayers);
-    tournament = emptyTournament();
-    localStorage.setItem('fruskogoracPlayers', JSON.stringify(currentPlayers));
-    localStorage.removeItem('fruskogoracTournament');
-    renderAll();
-    closePanels();
+  function renderPlayerSelection() {
+    const list = document.getElementById('playerSelectList');
+    if (!list) return;
+    const selectedNames = currentPlayers.map(p => p.name);
+    list.innerHTML = playerDatabase.map(player => {
+      const checked = selectedNames.includes(player.name) ? 'checked' : '';
+      const image = player.img ? `<img class="small-avatar" src="${player.img}" alt="${player.name}">` : '<span class="small-avatar" style="display:flex;align-items:center;justify-content:center;">♟</span>';
+      return `<label class="player-check">${image}<input type="checkbox" value="${player.name}" ${checked} onchange="updateSelectStatus()"><span>${player.name}</span></label>`;
+    }).join('');
+    updateSelectStatus();
   }
 
-  function resetDraw() {
-    currentPlayers = [...defaultPlayers];
-    tournament = emptyTournament();
-    localStorage.removeItem('fruskogoracPlayers');
-    localStorage.removeItem('fruskogoracTournament');
-    renderAll();
-    closePanels();
+  function selectedFromCheckboxes() {
+    return Array.from(document.querySelectorAll('#playerSelectList input:checked')).map(input => input.value);
   }
 
   function loadPlayers() {
     try {
       const saved = JSON.parse(localStorage.getItem('fruskogoracPlayers'));
-      if (Array.isArray(saved) && saved.length === 8) return saved;
+      if (Array.isArray(saved) && [4, 8, 16].includes(saved.length)) return saved;
     } catch (e) {}
-    return [...defaultPlayers];
-  }
-
-  function loadTournament() {
-    try {
-      const saved = JSON.parse(localStorage.getItem('fruskogoracTournament'));
-      if (saved && Array.isArray(saved.qf) && Array.isArray(saved.sf)) return saved;
-    } catch (e) {}
-    return emptyTournament();
+    return oldDefaultPlayers();
   }
 
   function saveTournament() { localStorage.setItem('fruskogoracTournament', JSON.stringify(tournament)); }
@@ -636,7 +1078,7 @@
     }
     historyList.innerHTML = '<ol>' + history.map(item => `<li>${item.date} <strong>(${item.winner})</strong></li>`).join('') + '</ol>';
     const scores = {};
-    defaultPlayers.forEach(p => scores[p.name] = 0);
+    playerDatabase.forEach(p => scores[p.name] = 0);
     history.forEach(item => scores[item.winner] = (scores[item.winner] || 0) + 1);
     const rows = Object.entries(scores).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).map(([name, wins]) => `<tr><td>${name}</td><td>${wins}</td></tr>`).join('');
     scoreSummary.innerHTML = `<table class="history-table"><thead><tr><th>Učesnik</th><th>Osvojeni turniri</th></tr></thead><tbody>${rows}</tbody></table>`;
@@ -653,6 +1095,7 @@
   }
 
   function toggleSettings() {
+    renderPlayerSelection();
     document.getElementById('settingsPanel').classList.toggle('show');
     document.getElementById('historyPanel').classList.remove('show');
   }
@@ -663,11 +1106,16 @@
     document.getElementById('settingsPanel').classList.remove('show');
   }
 
-  function openBracket() {
-    document.body.classList.add('zoomed');
-    closePanels();
-    window.scrollTo(0, 0);
-  }
+function openBracket() {
+  document.body.classList.add('zoomed');
+  closePanels();
+  window.scrollTo(0, 0);
+
+  requestAnimationFrame(() => {
+    document.querySelectorAll('.bracket').forEach(container => drawConnectors(container));
+  });
+}
+
 
   function closeBracket() {
     document.body.classList.remove('zoomed');
@@ -675,7 +1123,15 @@
     window.scrollTo(0, 0);
   }
 
-  renderAll();
+function renderAll() {
+  document.querySelectorAll('.bracket').forEach(container => buildBracket(container, currentPlayers));
+  renderPlayerSelection();
+
+  requestAnimationFrame(() => {
+    document.querySelectorAll('.bracket').forEach(container => drawConnectors(container));
+  });
+}
+
 </script>
 </body>
 </html>
